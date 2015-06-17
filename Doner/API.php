@@ -75,8 +75,8 @@ class API {
 	public function run() {
 		try {
 			header( 'Content-Type: application/json' );
-			$this->check_content_type();
 
+			$this->check_content_type();
 			$this->parse_route();
 			$this->parse_variables();
 

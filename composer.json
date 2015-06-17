@@ -1,0 +1,26 @@
+{
+	"name": "doner/doner",
+	"type": "library",
+	"description": "A Done List API",
+	"keywords": [
+		"rest",
+		"done",
+		"todo",
+		"api"
+	],
+	"homepage": "https://github.com/aidvu/doner",
+	"license": "GPL-2.0",
+	"authors": [
+		{
+			"name": "Andrija Vucinic",
+			"email": "andrija.vucinic@gmail.com",
+			"homepage": "http://andrija.me/"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0"
+	},
+	"autoload": {
+		"psr-0": {"Doner": "."}
+	}
+}

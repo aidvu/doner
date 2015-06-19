@@ -74,8 +74,6 @@ class API {
 	 */
 	public function run() {
 		try {
-			header( 'Content-Type: application/json' );
-
 			$this->check_content_type();
 			$this->parse_route();
 			$this->parse_variables();
@@ -84,7 +82,7 @@ class API {
 		} catch ( \Exception $e ) {
 			// TODO: Add generic case for non-Doner exceptions
 			if ( $e instanceof BaseException ) {
-				$e->return_error();
+				$e->output();
 			}
 		}
 	}

@@ -22,6 +22,11 @@ class BaseModel {
 	protected static $fields;
 
 	/**
+	 * @var array $order_by DB order_by fields
+	 */
+	protected static $order_by;
+
+	/**
 	 * Get a list of records from database filtered by parameters
 	 *
 	 * @param array $parameters query parameters
@@ -32,7 +37,8 @@ class BaseModel {
 
 		$db = MySql::getInstance();
 
-		$query = "SELECT " . implode(', ', static::$fields) . " FROM " . static::$table;
+		$query = "SELECT " . implode(', ', static::$fields) . " FROM " . static::$table .
+		         " ORDER BY " . implode(', ', static::$order_by);
 
 		$bindings = array();
 		if (!empty($parameters)) {

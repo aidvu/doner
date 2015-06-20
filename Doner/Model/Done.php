@@ -25,4 +25,12 @@ class Done extends BaseModel {
 		'created_at',
 		'updated_at',
 	);
+
+	/**
+	 * @var array $order_by DB order_by fields
+	 */
+	protected static $order_by = array(
+		'created_at DESC',
+		'updated_at DESC',
+	);
 }

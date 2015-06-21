@@ -12,6 +12,8 @@ $api->add_route( 1, \Doner\API::HTTP_GET, 'dones', function () use ( $api ) {
 $api->add_route( 1, \Doner\API::HTTP_DELETE, 'dones/{id}', function () use ( $api ) {
 	$variables = $api->get_variables();
 	\Doner\Model\Done::delete( $variables['id'] );
+
+	$api->response()->set_status(204);
 } );
 
 $api->run();

@@ -1,6 +1,13 @@
 # Composer
 api/composer.phar
+api/composer.lock
 api/vendor/
 
 # Project files
 .idea
+
+# node_modules
+node_modules/
+
+# built assets
+assets/build/

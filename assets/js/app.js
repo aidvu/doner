@@ -4,7 +4,6 @@ var Done = React.createClass( {
 	handleDelete: function () {
 		$.ajax( {
 			url: "api/v1/dones/" + this.props.data.id,
-			dataType: 'json',
 			type: 'DELETE',
 			success: function ( data ) {
 

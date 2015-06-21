@@ -112,7 +112,7 @@ var DonerHeader = React.createClass( {
 var DonerContent = React.createClass( {
 	render: function () {
 		return (
-			<div className="container-fluid">
+			<div className="container">
 				<DoneListContainer url="http://doner/v1/dones"/>
 			</div>
 		);

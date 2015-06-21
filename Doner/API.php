@@ -4,8 +4,10 @@ namespace Doner;
 
 use Doner\Exception\BaseException;
 use Doner\Exception\ContentTypeException;
+use Doner\Exception\InternalErrorException;
 use Doner\Exception\JSONFormatException;
 use Doner\Exception\NotFoundException;
+use Doner\Http\Response;
 
 class API {
 
@@ -45,6 +47,11 @@ class API {
 	private $variables = array();
 
 	/**
+	 * @var Response $response API Response Object
+	 */
+	private $response;
+
+	/**
 	 * @var array $allowed_content_types allowed HTTP content type header
 	 */
 	private $allowed_content_types = array(
@@ -52,6 +59,7 @@ class API {
 	);
 
 	public function __construct() {
+		$this->response = new Response();
 	}
 
 	/**
@@ -80,11 +88,15 @@ class API {
 
 			$this->route['function']();
 		} catch ( \Exception $e ) {
-			// TODO: Add generic case for non-Doner exceptions
-			if ( $e instanceof BaseException ) {
-				$e->output();
+			if ( ! ( $e instanceof BaseException ) ) {
+				$e = new InternalErrorException( $e->getMessage() );
 			}
+
+			$this->response()->set_body( $e->get_message() );
+			$this->response()->set_status( $e->getCode() );
 		}
+
+		$this->response()->output();
 	}
 
 	/**
@@ -191,5 +203,12 @@ class API {
 	 */
 	public function get_variables() {
 		return $this->variables;
+	}
+
+	/**
+	 * @return Response API Response object
+	 */
+	public function response() {
+		return $this->response;
 	}
 }

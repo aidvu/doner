@@ -10,6 +10,6 @@ namespace Doner\Exception;
 class ContentTypeException extends BaseException {
 	public function __construct() {
 		$this->message = 'Only application/json Content-Type supported';
-		$this->header = 400;
+		$this->code = 400;
 	}
 }

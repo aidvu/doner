@@ -10,6 +10,6 @@ namespace Doner\Exception;
 class JSONFormatException extends BaseException {
 	public function __construct() {
 		$this->message =  'Request data is not a JSON formatted string';
-		$this->header = 400;
+		$this->code = 400;
 	}
 }

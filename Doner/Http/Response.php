@@ -84,12 +84,26 @@ class Response {
 	private $status;
 
 	/**
-	 * @param string $body The HTTP response body
-	 * @param int $status The HTTP response status
+	 * @param string $body HTTP response body
+	 * @param int $status HTTP response status
 	 */
 	public function __construct( $body = '', $status = 200 ) {
 		$this->status = $status;
+		$this->body   = $body;
+	}
+
+	/**
+	 * @param string $body HTTP response body
+	 */
+	public function set_body( $body ) {
 		$this->body = $body;
+	}
+
+	/**
+	 * @param int $status HTTP response status
+	 */
+	public function set_status( $status ) {
+		$this->status = $status;
 	}
 
 	/**
@@ -98,7 +112,7 @@ class Response {
 	public function output() {
 		header( 'Content-Type: application/json' );
 		header( 'HTTP/1.1 ' . Response::get_message_for_code( $this->status ) );
-		echo json_encode($this->body);
+		echo json_encode( $this->body );
 	}
 
 	/**

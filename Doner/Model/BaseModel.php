@@ -56,4 +56,22 @@ class BaseModel {
 
 		return $rows;
 	}
+
+	/**
+	 * Delete record from DB by id
+	 *
+	 * @param int $id id of the record to be deleted
+	 *
+	 * @return int Number of rows affected
+	 */
+	public static function delete($id) {
+		$db = MySql::getInstance();
+
+		$stmt = $db->prepare("DELETE FROM " . static::$table . " WHERE id = ?");
+		$stmt->execute(array($id));
+
+		$count = $stmt->rowCount();
+
+		return $count;
+	}
 }

@@ -112,7 +112,9 @@ class Response {
 	public function output() {
 		header( 'Content-Type: application/json' );
 		header( 'HTTP/1.1 ' . Response::get_message_for_code( $this->status ) );
-		echo json_encode( $this->body );
+		if ( ! empty( $this->body ) ) {
+			echo json_encode( $this->body );
+		}
 	}
 
 	/**

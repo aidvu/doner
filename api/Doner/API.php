@@ -15,6 +15,7 @@ class API {
 	const HTTP_POST = 'POST';
 	const HTTP_PUT = 'PUT';
 	const HTTP_DELETE = 'DELETE';
+	const HTTP_OPTIONS = 'OPTIONS';
 
 	/**
 	 * @var string $path path requested
@@ -131,12 +132,13 @@ class API {
 
 		$request_uri = explode( '/', trim( $request_uri, '/' ) );
 
-		if ( count( $request_uri ) < 2 ) {
+		if ( count( $request_uri ) < 3 || $request_uri[0] != 'api' ) {
 			throw new NotFoundException();
 		}
-
-		$this->version = $request_uri[0];
 		unset( $request_uri[0] );
+
+		$this->version = $request_uri[1];
+		unset( $request_uri[1] );
 
 		$this->path = implode( '/', $request_uri );
 

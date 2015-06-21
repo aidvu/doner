@@ -1,6 +1,6 @@
 # Composer
-composer.phar
-vendor/
+api/composer.phar
+api/vendor/
 
 # Project files
 .idea

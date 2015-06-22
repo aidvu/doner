@@ -74,4 +74,31 @@ class BaseModel {
 
 		return $count;
 	}
+
+	/**
+	 * Insert or update record in DB
+	 *
+	 * @param array $variables variables parsed from request
+	 *
+	 * @return int Number of rows affected
+	 */
+	public static function save($variables) {
+		$db = MySql::getInstance();
+
+		$save_values = array();
+
+		foreach ($variables as $key => $value) {
+			if (in_array($key, static::$fields)) {
+				$save_values[$key] = $value;
+			}
+		}
+
+		$stmt = $db->prepare("INSERT INTO " . static::$table .
+		                     " (" . implode(", ", array_keys($save_values)). ")
+		                     VALUES (?" . str_repeat(",?", count($save_values) - 1) . ")");
+		$stmt->execute(array_values($save_values));
+		$count = $stmt->rowCount();
+
+		return $count;
+	}
 }

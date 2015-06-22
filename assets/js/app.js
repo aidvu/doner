@@ -6,7 +6,6 @@ var Done = React.createClass( {
 			url: "api/v1/dones/" + this.props.data.id,
 			type: 'DELETE',
 			success: function ( data ) {
-
 			}.bind( this ),
 			error: function ( xhr, status, err ) {
 				console.error( this.props.url, status, err.toString() );
@@ -61,7 +60,7 @@ var DoneList = React.createClass( {
 } );
 
 var DoneListContainer = React.createClass( {
-	componentDidMount: function () {
+	loadDones: function() {
 		$.ajax( {
 			url: this.props.url,
 			dataType: 'json',
@@ -90,6 +89,10 @@ var DoneListContainer = React.createClass( {
 			}.bind( this )
 		} );
 	},
+	componentDidMount: function () {
+		this.loadDones();
+		setInterval(this.loadDones, this.props.pollInterval);
+	},
 	getInitialState: function () {
 		return {data: []};
 	},
@@ -108,6 +111,60 @@ var DoneListContainer = React.createClass( {
 		);
 	}
 } );
+
+var DoneListForm = React.createClass({
+	handleSubmit: function(e) {
+		e.preventDefault();
+		var status = React.findDOMNode(this.refs.status).checked;
+		var text = React.findDOMNode(this.refs.text).value.trim();
+
+		if (!text) {
+			return;
+		}
+
+		React.findDOMNode(this.refs.text).value = '';
+
+		var data = {
+			"status": status,
+			"text": text
+		};
+
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			contentType: "application/json",
+			type: 'POST',
+			data: JSON.stringify(data),
+			success: function(data) {
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+		return;
+	},
+	render: function() {
+		return (
+			<div className="container">
+				<form className="doneListForm">
+					<div className="row">
+						<div className="col-xs-10">
+							<div className="input-group">
+								<span className="input-group-addon">
+									<input ref="status" type="checkbox" />
+								</span>
+								<input ref="text" type="text" className="form-control" />
+							</div>
+						</div>
+						<div className="col-xs-1">
+							<button type="button" className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		);
+	}
+});
 
 var DonerHeader = React.createClass( {
 	render: function () {
@@ -128,9 +185,11 @@ var DonerHeader = React.createClass( {
 
 var DonerContent = React.createClass( {
 	render: function () {
+		var url = "api/v1/dones";
 		return (
 			<div className="container">
-				<DoneListContainer url="api/v1/dones"/>
+				<DoneListForm url={url} />
+				<DoneListContainer url={url} pollInterval={1200} />
 			</div>
 		);
 	}

@@ -1,8 +1,12 @@
 body {
-	padding-top: 100px;
+	padding-top: 75px;
 }
 
 .glyphicon {
 	cursor: pointer;
 	margin-right: 5px;
+}
+
+.doneListForm {
+	margin-bottom: 15px;
 }

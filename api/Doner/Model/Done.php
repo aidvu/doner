@@ -33,4 +33,11 @@ class Done extends BaseModel {
 		'created_at DESC',
 		'updated_at DESC',
 	);
+
+	public static function save($variables) {
+		$variables['user_id'] = 1;
+		$variables['created_at'] = gmdate('Y-m-d H:i:s');
+
+		parent::save($variables);
+	}
 }

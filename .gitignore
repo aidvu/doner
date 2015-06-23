@@ -9,5 +9,5 @@ api/vendor/
 # node_modules
 node_modules/
 
-# built assets
-assets/build/
+# built assets cache
+assets/build/.module-cache

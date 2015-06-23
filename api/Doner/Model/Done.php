@@ -38,6 +38,6 @@ class Done extends BaseModel {
 		$variables['user_id'] = 1;
 		$variables['created_at'] = gmdate('Y-m-d H:i:s');
 
-		parent::save($variables);
+		return parent::save($variables);
 	}
 }

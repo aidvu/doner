@@ -151,7 +151,7 @@ class API {
 						continue;
 					}
 					foreach ( $route_explode as $key => $value ) {
-						if ( strpos( $route_explode[ $key ], '{' ) !== false ) {
+						if ( $this->is_route_variable( $value ) ) {
 							continue;
 						} else if ( $route_explode[ $key ] !== $path_explode[ $key ] ) {
 							break;
@@ -194,10 +194,25 @@ class API {
 		$path_explode  = explode( '/', $this->path );
 
 		foreach ( $route_explode as $key => $value ) {
-			if ( strpos( $value, '{' ) !== false ) {
+			if ( $this->is_route_variable( $value ) ) {
 				$this->variables[ substr( $value, 1, strlen( $value ) - 2 ) ] = $path_explode[ $key ];
 			}
 		}
+	}
+
+	/**
+	 * Check if given route part is a variable
+	 *
+	 * @param $value part of the path
+	 *
+	 * @return bool
+	 */
+	private function is_route_variable($value) {
+		if ( strpos( $value, '{' ) === 0 && strpos( $value, '}' ) === (strlen($value) - 1)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

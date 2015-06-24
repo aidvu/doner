@@ -8,3 +8,6 @@ define('DATABASE', '');
 define('USERNAME', '');
 // Database password
 define('PASSWORD', '');
+
+// Authorization Class
+define('AUTH_CLASS', '');

@@ -3,7 +3,7 @@
 namespace Doner\Model;
 
 /**
- * Class BaseModel
+ * Class Done
  *
  * @package Doner\Model
  */
@@ -34,10 +34,7 @@ class Done extends BaseModel {
 		'updated_at DESC',
 	);
 
-	public static function save($variables) {
-		$variables['user_id'] = 1;
-		$variables['created_at'] = gmdate('Y-m-d H:i:s');
-
-		return parent::save($variables);
+	public static function save( $variables ) {
+		return parent::save( $variables );
 	}
 }

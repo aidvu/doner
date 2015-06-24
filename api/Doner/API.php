@@ -2,6 +2,7 @@
 
 namespace Doner;
 
+use Doner\Authorization\AuthorizationInterface;
 use Doner\Exception\BaseException;
 use Doner\Exception\ContentTypeException;
 use Doner\Exception\InternalErrorException;
@@ -53,13 +54,19 @@ class API {
 	private $response;
 
 	/**
+	 * @var AuthorizationInterface $auth_class Used for request authorization
+	 */
+	private $auth_class;
+
+	/**
 	 * @var array $allowed_content_types allowed HTTP content type header
 	 */
 	private $allowed_content_types = array(
 		'application/json',
 	);
 
-	public function __construct() {
+	public function __construct($auth_class) {
+		$this->auth_class = $auth_class;
 		$this->response = new Response();
 	}
 
@@ -83,6 +90,8 @@ class API {
 	 */
 	public function run() {
 		try {
+			$this->auth_class->authorize();
+
 			$this->check_content_type();
 			$this->parse_route();
 			$this->parse_variables();
@@ -227,5 +236,12 @@ class API {
 	 */
 	public function response() {
 		return $this->response;
+	}
+
+	/**
+	 * @return User Authorized user
+	 */
+	public function get_user() {
+		return $this->auth_class->get_user();
 	}
 }

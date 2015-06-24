@@ -1,5 +1,7 @@
 'use strict';
 
+document.cookie = "doner_cookie=auto-mata-2015";
+
 var Done = React.createClass( {displayName: "Done",
 	handleDelete: function () {
 		$.ajax( {

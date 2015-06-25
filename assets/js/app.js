@@ -138,6 +138,7 @@ var DoneListForm = React.createClass({
 			type: 'POST',
 			data: JSON.stringify(data),
 			success: function(data) {
+				React.findDOMNode(this.refs.text).focus();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(this.props.url, status, err.toString());
@@ -148,7 +149,7 @@ var DoneListForm = React.createClass({
 	render: function() {
 		return (
 			<div className="container">
-				<form className="doneListForm">
+				<form className="doneListForm" onSubmit={this.handleSubmit}>
 					<div className="row">
 						<div className="col-xs-10">
 							<div className="input-group">
@@ -159,7 +160,7 @@ var DoneListForm = React.createClass({
 							</div>
 						</div>
 						<div className="col-xs-1">
-							<button type="button" className="btn btn-primary" onClick={this.handleSubmit}>Save</button>
+							<button type="submit" className="btn btn-primary">Save</button>
 						</div>
 					</div>
 				</form>

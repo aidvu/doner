@@ -138,6 +138,7 @@ var DoneListForm = React.createClass({displayName: "DoneListForm",
 			type: 'POST',
 			data: JSON.stringify(data),
 			success: function(data) {
+				React.findDOMNode(this.refs.text).focus();
 			}.bind(this),
 			error: function(xhr, status, err) {
 				console.error(this.props.url, status, err.toString());
@@ -148,7 +149,7 @@ var DoneListForm = React.createClass({displayName: "DoneListForm",
 	render: function() {
 		return (
 			React.createElement("div", {className: "container"}, 
-				React.createElement("form", {className: "doneListForm"}, 
+				React.createElement("form", {className: "doneListForm", onSubmit: this.handleSubmit}, 
 					React.createElement("div", {className: "row"}, 
 						React.createElement("div", {className: "col-xs-10"}, 
 							React.createElement("div", {className: "input-group"}, 
@@ -159,7 +160,7 @@ var DoneListForm = React.createClass({displayName: "DoneListForm",
 							)
 						), 
 						React.createElement("div", {className: "col-xs-1"}, 
-							React.createElement("button", {type: "button", className: "btn btn-primary", onClick: this.handleSubmit}, "Save")
+							React.createElement("button", {type: "submit", className: "btn btn-primary"}, "Save")
 						)
 					)
 				)

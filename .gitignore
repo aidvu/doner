@@ -1,6 +1,5 @@
 # Composer
 api/composer.phar
-api/composer.lock
 api/vendor/
 
 # Project files

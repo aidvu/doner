@@ -20,11 +20,23 @@ $api->add_route( 1, \Doner\API::HTTP_DELETE, 'dones/{id}', function () use ( $ap
 $api->add_route( 1, \Doner\API::HTTP_POST, 'dones', function () use ( $api ) {
 	$variables = $api->get_variables();
 
-	$variables['user_id'] = $api->get_user()['id'];
+	$variables['user_id'] = $api->get_user()->id;
 	$variables['created_at'] = gmdate( 'Y-m-d H:i:s' );
 
-	\Doner\Model\Done::save( $variables );
+	$done = \Doner\Model\Done::save( $variables );
 
+	$api->response()->set_body( $done );
+	$api->response()->set_status( 200 );
+} );
+
+$api->add_route( 1, \Doner\API::HTTP_PUT, 'dones/{id}', function () use ( $api ) {
+	$variables = $api->get_variables();
+
+	$variables['user_id'] = $api->get_user()->id;
+
+	$done = \Doner\Model\Done::save( $variables );
+
+	$api->response()->set_body( $done );
 	$api->response()->set_status( 200 );
 } );
 

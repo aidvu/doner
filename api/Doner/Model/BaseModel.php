@@ -3,6 +3,7 @@
 namespace Doner\Model;
 
 use Doner\Database\MySql;
+use Doner\Exception\InternalErrorException;
 
 /**
  * Class BaseModel
@@ -118,12 +119,47 @@ class BaseModel {
 			}
 		}
 
-		$stmt = $db->prepare( "INSERT INTO " . static::$table .
-		                      " (" . implode( ", ", array_keys( $save_values ) ) . ")
-		                     VALUES (?" . str_repeat( ", ?", count( $save_values ) - 1 ) . ")" );
-		$stmt->execute( array_values( $save_values ) );
-		$count = $stmt->rowCount();
+		if ( empty( $save_values['id'] ) ) {
+			$query = "INSERT INTO " . static::$table . " (" . implode( ", ", array_keys( $save_values ) ) . ")
+						VALUES (?" . str_repeat( ", ?", count( $save_values ) - 1 ) . ")";
+			$bindings = array_values( $save_values );
+		} else {
+			$id = $save_values['id'];
+			unset( $save_values['id'] );
 
-		return $count;
+			$query = "UPDATE " . static::$table . " SET ";
+			$query .= implode( " = ?, ", array_keys( $save_values ) ) . " = ? ";
+			$query .= " WHERE id = ?";
+			array_push( $save_values, $id );
+			$bindings = array_values( $save_values );
+		}
+
+		$db->beginTransaction();
+
+		$stmt = $db->prepare( $query );
+		$stmt->execute( $bindings );
+
+		if ( empty( $id ) ) {
+			$id = $db->lastInsertId();
+		}
+
+		$model = self::get_one(
+			array(
+				array(
+					'field' => 'id',
+					'operator' => '=',
+					'value' => $id,
+				),
+			)
+		);
+
+		if ( empty( $model ) ) {
+			$db->rollBack();
+			throw new InternalErrorException($db->errorInfo());
+		}
+
+		$db->commit();
+
+		return $model;
 	}
 }

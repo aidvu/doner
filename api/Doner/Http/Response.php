@@ -89,7 +89,7 @@ class Response {
 	 */
 	public function __construct( $body = '', $status = 200 ) {
 		$this->status = $status;
-		$this->body   = $body;
+		$this->body = $body;
 	}
 
 	/**

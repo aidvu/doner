@@ -28,21 +28,18 @@ class CookieAuthorization implements AuthorizationInterface {
 		}
 		$auth_cookie = $_COOKIE['doner_cookie'];
 
-		$this->user = User::get(
+		$this->user = User::get_one(
 			array(
 				array(
-					'field'    => 'token',
+					'field' => 'token',
 					'operator' => '=',
-					'value'    => $auth_cookie,
+					'value' => $auth_cookie,
 				),
-			),
-			1
+			)
 		);
 
 		if ( empty( $this->user ) ) {
 			throw new AuthorizationException();
 		}
-
-		$this->user = $this->user[0];
 	}
 }

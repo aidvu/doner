@@ -65,6 +65,24 @@ class BaseModel {
 	}
 
 	/**
+	 * Fetch a single record from DB filtered by parameters
+	 *
+	 * @param array $parameters query parameters
+	 *
+	 * @return BaseModel|null fetched model or null if it doesn't exist
+	 */
+	public static function get_one( $parameters ) {
+		$model = null;
+
+		$models = self::get( $parameters, 1 );
+		if ( ! empty( $models ) ) {
+			$model = $models[0];
+		}
+
+		return $model;
+	}
+
+	/**
 	 * Delete record from DB by id
 	 *
 	 * @param int $id id of the record to be deleted

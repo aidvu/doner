@@ -35,7 +35,6 @@ class BaseModel {
 	 * @return array fetched rows from DB
 	 */
 	public static function get( $parameters = array(), $limit = 0 ) {
-
 		$db = MySql::getInstance();
 
 		$query = "SELECT " . implode( ', ', static::$fields ) . " FROM " . static::$table;
@@ -60,7 +59,7 @@ class BaseModel {
 
 		$stmt = $db->prepare( $query );
 		$stmt->execute( $bindings );
-		$rows = $stmt->fetchAll( \PDO::FETCH_ASSOC );
+		$rows = $stmt->fetchAll( \PDO::FETCH_CLASS, get_called_class() );
 
 		return $rows;
 	}

@@ -1,6 +1,7 @@
 <?php
 
 namespace Doner\Model;
+use Doner\Validator;
 
 /**
  * Class Done
@@ -35,6 +36,8 @@ class Done extends BaseModel {
 	);
 
 	public function save() {
-		return parent::save();
+		Validator::validate($this, array());
+
+		parent::save();
 	}
 }

@@ -118,16 +118,17 @@ class BaseModel {
 		}
 
 		if ( empty( $save_values['id'] ) ) {
-			$query = "INSERT INTO " . static::$table . " (" . implode( ", ", array_keys( $save_values ) ) . ")
-						VALUES (?" . str_repeat( ", ?", count( $save_values ) - 1 ) . ")";
+			$query = "INSERT INTO " . static::$table .
+			         " (" . implode( ", ", array_keys( $save_values ) ) . ") " .
+			         " VALUES (?" . str_repeat( ", ?", count( $save_values ) - 1 ) . ")";
 			$bindings = array_values( $save_values );
 		} else {
 			$id = $save_values['id'];
 			unset( $save_values['id'] );
 
-			$query = "UPDATE " . static::$table . " SET ";
-			$query .= implode( " = ?, ", array_keys( $save_values ) ) . " = ? ";
-			$query .= " WHERE id = ?";
+			$query = "UPDATE " . static::$table .
+			         " SET " . implode( " = ?, ", array_keys( $save_values ) ) . " = ? " .
+			         " WHERE id = ?";
 			array_push( $save_values, $id );
 			$bindings = array_values( $save_values );
 		}
@@ -158,10 +159,19 @@ class BaseModel {
 
 		$db->commit();
 
-		foreach ( static::$fields as $field ) {
-			$this->$field = $model->$field;
-		}
+		$this->populate_model( (array) $model );
+	}
 
-		return $this;
+	/**
+	 * Populates model from a given key => value array based on $fields defined for the Model
+	 *
+	 * @param array $variables key => value fields to populate model with
+	 */
+	public function populate_model( $variables ) {
+		foreach ( $variables as $key => $value ) {
+			if ( in_array( $key, static::$fields ) ) {
+				$this->$key = $value;
+			}
+		}
 	}
 }

@@ -75,7 +75,7 @@ class BaseModel {
 	public static function get_one( $parameters ) {
 		$model = null;
 
-		$models = self::get( $parameters, 1 );
+		$models = static::get( $parameters, 1 );
 		if ( ! empty( $models ) ) {
 			$model = $models[0];
 		}
@@ -102,20 +102,18 @@ class BaseModel {
 	}
 
 	/**
-	 * Insert or update record in DB
-	 *
-	 * @param array $variables variables parsed from request
+	 * Insert or update model in DB
 	 *
 	 * @return int Number of rows affected
 	 */
-	public static function save( $variables ) {
+	public function save() {
 		$db = MySql::getInstance();
 
 		$save_values = array();
 
-		foreach ( $variables as $key => $value ) {
-			if ( in_array( $key, static::$fields ) ) {
-				$save_values[ $key ] = $value;
+		foreach ( static::$fields as $field ) {
+			if ( isset( $this->$field ) ) {
+				$save_values[ $field ] = $this->$field;
 			}
 		}
 
@@ -139,16 +137,16 @@ class BaseModel {
 		$stmt = $db->prepare( $query );
 		$stmt->execute( $bindings );
 
-		if ( empty( $id ) ) {
-			$id = $db->lastInsertId();
+		if ( empty( $this->id ) ) {
+			$this->id = $db->lastInsertId();
 		}
 
-		$model = self::get_one(
+		$model = static::get_one(
 			array(
 				array(
 					'field' => 'id',
 					'operator' => '=',
-					'value' => $id,
+					'value' => $this->id,
 				),
 			)
 		);
@@ -160,6 +158,10 @@ class BaseModel {
 
 		$db->commit();
 
-		return $model;
+		foreach ( static::$fields as $field ) {
+			$this->$field = $model->$field;
+		}
+
+		return $this;
 	}
 }

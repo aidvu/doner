@@ -34,7 +34,7 @@ class Done extends BaseModel {
 		'updated_at DESC',
 	);
 
-	public static function save( $variables ) {
-		return parent::save( $variables );
+	public function save() {
+		return parent::save();
 	}
 }

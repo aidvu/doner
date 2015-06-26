@@ -127,7 +127,7 @@ var DoneListForm = React.createClass({
 		React.findDOMNode(this.refs.text).value = '';
 
 		var data = {
-			"status": status,
+			"status": status ? 1 : 0,
 			"text": text
 		};
 

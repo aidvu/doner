@@ -212,7 +212,7 @@ class API {
 	/**
 	 * Check if given route part is a variable
 	 *
-	 * @param $value part of the path
+	 * @param string $value part of the path
 	 *
 	 * @return bool
 	 */
@@ -239,7 +239,7 @@ class API {
 	}
 
 	/**
-	 * @return User Authorized user
+	 * @return object Currently logged user
 	 */
 	public function get_user() {
 		return $this->auth_class->get_user();

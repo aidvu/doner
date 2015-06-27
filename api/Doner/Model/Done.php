@@ -1,6 +1,7 @@
 <?php
 
 namespace Doner\Model;
+
 use Doner\Validator;
 
 /**
@@ -36,7 +37,19 @@ class Done extends BaseModel {
 	);
 
 	public function save() {
-		Validator::validate($this, array());
+		Validator::validate(
+			$this,
+			array(
+				'id' => array( Validator::INT ),
+				'user_id' => array( Validator::REQUIRED, Validator::INT ),
+				'text' => array( Validator::NOT_EMPTY, Validator::STRING ),
+				'status' => array( Validator::NOT_EMPTY, Validator::INT ),
+			)
+		);
+
+		if ( ! isset( $this->id ) ) {
+			$this->created_at = gmdate( 'Y-m-d H:i:s' );
+		}
 
 		parent::save();
 	}

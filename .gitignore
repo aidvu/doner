@@ -8,5 +8,5 @@ api/vendor/
 # node_modules
 node_modules/
 
-# built assets cache
-assets/build/.module-cache
+# built assets
+assets/build/*

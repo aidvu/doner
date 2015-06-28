@@ -1,0 +1,44 @@
+{
+	"name": "doner-ui",
+	"version": "1.0.0",
+	"description": "A UI written in React.js for the doner done list app.",
+	"main": "assets/js/app.js",
+	"dependencies": {
+		"flux": "^2.0.3",
+		"react": "^0.13.3"
+	},
+	"devDependencies": {
+		"browserify": "^10.2.4",
+		"jest-cli": "^0.4.13",
+		"reactify": "^1.1.1",
+		"uglify-js": "^2.4.23",
+		"watchify": "^3.2.3"
+	},
+	"scripts": {
+		"start": "watchify -o assets/build/bundle.js -v -d assets/js/app.js",
+		"build": "browserify . | uglifyjs -cm > assets/build/bundle.min.js",
+		"clean": "rm -r assets/build/*",
+		"test": "jest"
+	},
+	"browserify": {
+		"transform": [
+			"reactify"
+		]
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/aidvu/doner.git"
+	},
+	"keywords": [
+		"rest",
+		"done",
+		"todo",
+		"ui"
+	],
+	"author": "Andrija Vucinic",
+	"license": "GPL-2.0",
+	"bugs": {
+		"url": "https://github.com/aidvu/doner/issues"
+	},
+	"homepage": "https://github.com/aidvu/doner"
+}

@@ -1,16 +1,9 @@
 var React = require( 'react' );
+var DoneActions = require( '../actions/DoneActions' );
 
 var Done = React.createClass( {
-	handleDelete: function () {
-		$.ajax( {
-			url: "api/v1/dones/" + this.props.data.id,
-			type: 'DELETE',
-			success: function ( data ) {
-			}.bind( this ),
-			error: function ( xhr, status, err ) {
-				console.error( this.props.url, status, err.toString() );
-			}.bind( this )
-		} );
+	_onDestroyClick: function () {
+		DoneActions.destroy( this.props.data.id );
 	},
 	render: function () {
 		var status;
@@ -28,12 +21,12 @@ var Done = React.createClass( {
 				<td className="col-xs-1">
 					{status}
 				</td>
-				<td>
+				<td className="col-xs-10">
 					{this.props.data.text}
 				</td>
 				<td className="col-xs-1">
 					<span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
-					<span onClick={this.handleDelete} className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					<span onClick={this._onDestroyClick} className="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				</td>
 			</tr>
 		);

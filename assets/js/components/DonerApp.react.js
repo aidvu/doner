@@ -6,14 +6,12 @@ var DoneList = require( './DoneList.react' );
 
 var Doner = React.createClass( {
 	render: function () {
-		var url = "api/v1/dones";
-
 		return (
 			<div>
 				<Header />
 				<div className="container">
-					<DoneForm url={url} />
-					<DoneList url={url} pollInterval={1200} />
+					<DoneForm />
+					<DoneList />
 				</div>
 			</div>
 		);

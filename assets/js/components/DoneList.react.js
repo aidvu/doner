@@ -1,6 +1,7 @@
 var React = require( 'react' );
 
 var Done = require( './Done.react' );
+var DoneStore = require( '../stores/DoneStore' );
 
 var DoneListContainer = React.createClass( {
 	render: function () {
@@ -26,49 +27,31 @@ var DoneListContainer = React.createClass( {
 } );
 
 var DoneList = React.createClass( {
-	loadDones: function () {
-		$.ajax( {
-			url: this.props.url,
-			dataType: 'json',
-			type: 'GET',
-			success: function ( data ) {
-				var data_objects = {};
-				for ( var key in data ) {
-					var date_key = data[key]['created_at'].substr( 0, 10 );
-					if ( ! data_objects[date_key] ) {
-						data_objects[date_key] = [];
-					}
-					data_objects[date_key].push( data[key] );
-				}
-
-				var organized_data = [];
-				for ( key in data_objects ) {
-					var separate_object = {};
-					separate_object[key] = data_objects[key];
-					organized_data.push( separate_object );
-				}
-
-				this.setState( {data: organized_data} );
-			}.bind( this ),
-			error: function ( xhr, status, err ) {
-				//console.error( this.props.url, status, err.toString() );
-			}.bind( this )
-		} );
-	},
 	componentDidMount: function () {
-		this.loadDones();
-		setInterval( this.loadDones, this.props.pollInterval );
+		DoneStore.loadInitial();
+		DoneStore.addChangeListener( this._onChange );
+	},
+	componentWillUnmount: function () {
+		DoneStore.removeChangeListener( this._onChange );
+	},
+	_onChange: function () {
+		var state = {
+			data: DoneStore.getAll()
+		};
+		this.setState( state );
 	},
 	getInitialState: function () {
 		return {data: []};
 	},
 	render: function () {
-		var doneList = this.state.data.map( function ( dones ) {
-			var date = Object.keys( dones )[0];
-			return (
-				<DoneListContainer key={date} date={date} data={dones[date]} />
+		var doneList = [];
+		for ( var date_dones in this.state.data ) {
+			var date = this.state.data[date_dones].date;
+			var dones = this.state.data[date_dones].data;
+			doneList.push(
+				<DoneListContainer key={date} date={date} data={dones} />
 			);
-		} );
+		}
 
 		return (
 			<div>

@@ -1,41 +1,29 @@
 var React = require( 'react' );
+var DoneActions = require( '../actions/DoneActions' );
+var DoneStore = require( '../stores/DoneStore' );
 
 var DoneForm = React.createClass( {
-	handleSubmit: function ( e ) {
+	_handleSubmit: function ( e ) {
 		e.preventDefault();
-		var status = React.findDOMNode( this.refs.status ).checked;
-		var text = React.findDOMNode( this.refs.text ).value.trim();
+		var status = React.findDOMNode( this.refs.status ).checked ? 1 : 0;
+		var text = React.findDOMNode( this.refs.text ).value;
 
-		if ( ! text ) {
-			return;
-		}
-
+		DoneActions.create( status, text );
+	},
+	componentDidMount: function () {
+		DoneStore.addChangeListener( this._onChange );
+	},
+	componentWillUnmount: function () {
+		DoneStore.removeChangeListener( this._onChange );
+	},
+	_onChange: function () {
 		React.findDOMNode( this.refs.text ).value = '';
-
-		var data = {
-			"status": status ? 1 : 0,
-			"text": text
-		};
-
-		$.ajax( {
-			url: this.props.url,
-			dataType: 'json',
-			contentType: "application/json",
-			type: 'POST',
-			data: JSON.stringify( data ),
-			success: function ( data ) {
-				React.findDOMNode( this.refs.text ).focus();
-			}.bind( this ),
-			error: function ( xhr, status, err ) {
-				console.error( this.props.url, status, err.toString() );
-			}.bind( this )
-		} );
-		return;
+		React.findDOMNode( this.refs.text ).focus();
 	},
 	render: function () {
 		return (
 			<div className="container">
-				<form className="doneForm" onSubmit={this.handleSubmit}>
+				<form className="doneForm" onSubmit={this._handleSubmit}>
 					<div className="row">
 						<div className="col-xs-10">
 							<div className="input-group">

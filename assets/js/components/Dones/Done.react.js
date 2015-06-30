@@ -1,5 +1,5 @@
 var React = require( 'react' );
-var DoneActions = require( '../actions/DoneActions' );
+var DoneActions = require( '../../actions/DoneActions' );
 var DoneEdit = require( './DoneEdit.react' );
 
 var Done = React.createClass( {

@@ -1,6 +1,6 @@
 var React = require( 'react' );
-var DoneActions = require( '../actions/DoneActions' );
-var DoneStore = require( '../stores/DoneStore' );
+var DoneActions = require( '../../actions/DoneActions' );
+var DoneStore = require( '../../stores/DoneStore' );
 
 var DoneForm = React.createClass( {
 	_handleSubmit: function ( e ) {

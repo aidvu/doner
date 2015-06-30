@@ -1,8 +1,8 @@
 var React = require( 'react' );
 
 var Done = require( './Done.react' );
-var DoneActions = require( '../actions/DoneActions' );
-var DoneStore = require( '../stores/DoneStore' );
+var DoneActions = require( '../../actions/DoneActions' );
+var DoneStore = require( '../../stores/DoneStore' );
 
 var DoneListContainer = React.createClass( {
 	render: function () {

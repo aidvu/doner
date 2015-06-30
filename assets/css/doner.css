@@ -7,6 +7,10 @@ body {
 	margin-right: 5px;
 }
 
-.doneForm {
+.done-form {
 	margin-bottom: 15px;
+}
+
+.done-edit {
+	height: 20px;
 }

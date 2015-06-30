@@ -20,8 +20,8 @@ var DoneForm = React.createClass( {
 		React.findDOMNode( this.refs.text ).value = '';
 		React.findDOMNode( this.refs.text ).focus();
 	},
-	handleChange: function() {
-		this.setState({checked: event.target.checked});
+	handleChange: function () {
+		this.setState( {checked: event.target.checked} );
 	},
 	getInitialState: function () {
 		return {checked: true};
@@ -29,7 +29,7 @@ var DoneForm = React.createClass( {
 	render: function () {
 		return (
 			<div className="container">
-				<form className="doneForm" onSubmit={this._handleSubmit}>
+				<form className="done-form" onSubmit={this._handleSubmit}>
 					<div className="row">
 						<div className="col-xs-10">
 							<div className="input-group">

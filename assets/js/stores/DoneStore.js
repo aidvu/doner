@@ -18,10 +18,12 @@ function load_dones() {
 			for ( var done in data ) {
 				_dones[data[done].id] = data[done];
 			}
-			DoneStore.emitChange();
 		}.bind( this ),
 		error: function ( xhr, status, err ) {
 			console.error( url, status, err.toString() );
+		}.bind( this ),
+		complete: function () {
+			DoneStore.emitChange();
 		}.bind( this )
 	} );
 }
@@ -44,10 +46,12 @@ function create( status, text ) {
 		data: JSON.stringify( data ),
 		success: function ( data ) {
 			_dones[data.id] = data;
-			DoneStore.emitChange();
 		}.bind( this ),
 		error: function ( xhr, status, err ) {
 			console.error( url, status, err.toString() );
+		}.bind( this ),
+		complete: function () {
+			DoneStore.emitChange();
 		}.bind( this )
 	} );
 }
@@ -67,10 +71,12 @@ function update( done ) {
 		data: JSON.stringify( done ),
 		success: function ( data ) {
 			_dones[data.id] = assign( {}, _dones[data.id], data );
-			DoneStore.emitChange();
 		}.bind( this ),
 		error: function ( xhr, status, err ) {
 			console.error( url, status, err.toString() );
+		}.bind( this ),
+		complete: function () {
+			DoneStore.emitChange();
 		}.bind( this )
 	} );
 }
@@ -85,10 +91,12 @@ function destroy( id ) {
 		type: 'DELETE',
 		success: function () {
 			delete _dones[id];
-			DoneStore.emitChange( CHANGE_EVENT );
 		}.bind( this ),
 		error: function ( xhr, status, err ) {
 			console.error( url, status, err.toString() );
+		}.bind( this ),
+		complete: function () {
+			DoneStore.emitChange();
 		}.bind( this )
 	} );
 }

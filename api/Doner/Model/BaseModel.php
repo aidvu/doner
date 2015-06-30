@@ -44,10 +44,12 @@ class BaseModel {
 		if ( ! empty( $parameters ) ) {
 			$query .= " WHERE ";
 
+			$query_parts = array();
 			foreach ( $parameters as $parameter ) {
-				$query .= $parameter['field'] . ' ' . $parameter['operator'] . ' ? ';
+				$query_parts[] = $parameter['field'] . ' ' . $parameter['operator'] . ' ? ';
 				$bindings[] = $parameter['value'];
 			}
+			$query .= implode(' AND ', $query_parts);
 		}
 
 		if ( ! empty( static::$order_by ) ) {

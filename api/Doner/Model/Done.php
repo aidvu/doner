@@ -2,6 +2,7 @@
 
 namespace Doner\Model;
 
+use Doner\Exception\AuthorizationException;
 use Doner\Validator;
 
 /**
@@ -52,5 +53,34 @@ class Done extends BaseModel {
 		}
 
 		parent::save();
+	}
+
+	/**
+	 * Checks if given user is owner of the done
+	 *
+	 * @param int $id Done Id
+	 * @param int $user_id User Id
+	 *
+	 * @throws AuthorizationException
+	 */
+	public static function is_owner($id, $user_id) {
+		$model = static::get_one(
+			array(
+				array(
+					'field' => 'id',
+					'operator' => '=',
+					'value' => $id,
+				),
+				array(
+					'field' => 'user_id',
+					'operator' => '=',
+					'value' => $user_id,
+				),
+			)
+		);
+
+		if (empty($model)) {
+			throw new AuthorizationException();
+		}
 	}
 }

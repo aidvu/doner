@@ -1,6 +1,7 @@
 var React = require( 'react' );
 var DoneActions = require( '../../actions/DoneActions' );
 var DoneEdit = require( './DoneEdit.react' );
+var assign = require( 'object-assign' );
 
 var Done = React.createClass( {
 
@@ -29,8 +30,8 @@ var Done = React.createClass( {
 	 * @param  {string} text
 	 */
 	_onSave: function ( text ) {
-		var done = this.props.data;
-		if ( done.text !== text.trim() ) {
+		var done = assign( {}, this.props.data, {text: text.trim()} );
+		if ( done.text !== this.props.data.text ) {
 			done.text = text;
 			DoneActions.update( done );
 		}

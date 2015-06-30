@@ -20,6 +20,12 @@ var DoneForm = React.createClass( {
 		React.findDOMNode( this.refs.text ).value = '';
 		React.findDOMNode( this.refs.text ).focus();
 	},
+	handleChange: function() {
+		this.setState({checked: event.target.checked});
+	},
+	getInitialState: function () {
+		return {checked: true};
+	},
 	render: function () {
 		return (
 			<div className="container">
@@ -28,7 +34,7 @@ var DoneForm = React.createClass( {
 						<div className="col-xs-10">
 							<div className="input-group">
 								<span className="input-group-addon">
-									<input ref="status" type="checkbox" />
+									<input ref="status" type="checkbox" onChange={this.handleChange} checked={this.state.checked} />
 								</span>
 								<input ref="text" type="text" className="form-control" />
 							</div>

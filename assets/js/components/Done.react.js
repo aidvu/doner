@@ -5,27 +5,31 @@ var Done = React.createClass( {
 	_onDestroyClick: function () {
 		DoneActions.destroy( this.props.data.id );
 	},
+	_onUpdateClick: function () {
+		var done = this.props.data;
+		done.status = done.status == 1 ? 0 : 1;
+		DoneActions.update( done );
+	},
 	render: function () {
 		var status;
+
 		if ( this.props.data.status == 1 ) {
-			status = (
-				<span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
-			);
+			status = 'glyphicon-ok';
 		} else {
-			status = (
-				<span className="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
-			);
+			status = 'glyphicon-unchecked';
 		}
+		var classes = 'glyphicon ' + status;
+
 		return (
 			<tr>
 				<td className="col-xs-1">
-					{status}
+					<span onClick={this._onUpdateClick} className={classes} aria-hidden="true"></span>
 				</td>
 				<td className="col-xs-10">
 					{this.props.data.text}
+					<span className="badge pull-right">{this.props.data.user_id}</span>
 				</td>
 				<td className="col-xs-1">
-					<span className="glyphicon glyphicon-edit" aria-hidden="true"></span>
 					<span onClick={this._onDestroyClick} className="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				</td>
 			</tr>

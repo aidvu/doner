@@ -4,6 +4,15 @@ var DonerConstants = require( '../constants/DonerConstants' );
 var DoneActions = {
 
 	/**
+	 *
+	 */
+	load: function () {
+		AppDispatcher.dispatch( {
+			actionType: DonerConstants.DONE_LOAD
+		} );
+	},
+
+	/**
 	 * @param  {int} status
 	 * @param  {string} text
 	 */

@@ -9,7 +9,7 @@ var _dones = {};
 
 var url = 'api/v1/dones';
 
-function loadDones() {
+function load_dones() {
 	$.ajax( {
 		url: url,
 		dataType: 'json',
@@ -58,8 +58,21 @@ function create( status, text ) {
  * @param {object} updates An object literal containing only the data to be
  *     updated.
  */
-function update( id, updates ) {
-	_dones[id] = assign( {}, _dones[id], updates );
+function update( done ) {
+	$.ajax( {
+		url: url + '/' + done.id,
+		dataType: 'json',
+		contentType: "application/json",
+		type: 'PUT',
+		data: JSON.stringify( done ),
+		success: function ( data ) {
+			_dones[data.id] = assign( {}, _dones[data.id], data );
+			DoneStore.emitChange();
+		}.bind( this ),
+		error: function ( xhr, status, err ) {
+			console.error( url, status, err.toString() );
+		}.bind( this )
+	} );
 }
 
 /**
@@ -139,27 +152,24 @@ var DoneStore = assign( {}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register( function ( action ) {
-	var text;
-
 	switch ( action.actionType ) {
 		case DonerConstants.DONE_CREATE:
-			text = action.text.trim();
+			var text = action.text.trim();
 			if ( text !== '' ) {
 				create( action.status, text );
-				DoneStore.emitChange();
 			}
 			break;
 
 		case DonerConstants.DONE_UPDATE:
-			text = action.text.trim();
-			if ( text !== '' ) {
-				update( action.id, {text: text} );
-				DoneStore.emitChange();
-			}
+			update( action.done );
 			break;
 
 		case DonerConstants.DONE_DESTROY:
 			destroy( action.id );
+			break;
+
+		case DonerConstants.DONE_LOAD:
+			load_dones();
 			break;
 
 		default:

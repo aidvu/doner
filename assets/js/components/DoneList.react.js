@@ -1,6 +1,7 @@
 var React = require( 'react' );
 
 var Done = require( './Done.react' );
+var DoneActions = require( '../actions/DoneActions' );
 var DoneStore = require( '../stores/DoneStore' );
 
 var DoneListContainer = React.createClass( {
@@ -28,7 +29,7 @@ var DoneListContainer = React.createClass( {
 
 var DoneList = React.createClass( {
 	componentDidMount: function () {
-		DoneStore.loadInitial();
+		DoneActions.load();
 		DoneStore.addChangeListener( this._onChange );
 	},
 	componentWillUnmount: function () {

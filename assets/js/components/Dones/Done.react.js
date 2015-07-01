@@ -38,22 +38,19 @@ var Done = React.createClass( {
 	},
 
 	render: function () {
-		var status;
 
-		if ( this.props.data.status == 1 ) {
-			status = 'glyphicon-ok';
-		} else {
-			status = 'glyphicon-unchecked';
+		var status = 'glyphicon-ok';
+		if ( this.props.data.status == 0 ) {
+			status = 'glyphicon-unchecked'
 		}
+
 		var classes = 'glyphicon ' + status;
 
-		var text;
+		var text = this.props.data.text;
 		if ( this.state.isEditing ) {
 			text = (
 				<DoneEdit onSave={this._onSave} value={this.props.data.text} />
 			);
-		} else {
-			text = this.props.data.text;
 		}
 
 		return (

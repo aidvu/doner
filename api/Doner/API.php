@@ -192,11 +192,10 @@ class API {
 		}
 
 		if ( ! empty( $_SERVER['CONTENT_TYPE'] ) && $_SERVER['CONTENT_TYPE'] === 'application/json' ) {
-			if ( $raw_array = json_decode( file_get_contents( "php://input" ), true ) ) {
-				$this->variables = array_merge( $this->variables, $raw_array );
-			} else {
+			if ( ( $raw_array = json_decode( file_get_contents( "php://input" ), true ) ) === null ) {
 				throw new JSONFormatException();
 			}
+			$this->variables = array_merge( $this->variables, $raw_array );
 		}
 
 		$route_explode = explode( '/', $this->route['path'] );

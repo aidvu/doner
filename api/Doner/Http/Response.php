@@ -123,10 +123,11 @@ class Response {
 	 * @return null|string Returns the HTTP message for given code if it exists
 	 */
 	public static function get_message_for_code( $status ) {
+		$message = null;
 		if ( isset( self::$messages[ $status ] ) ) {
-			return self::$messages[ $status ];
-		} else {
-			return null;
+			$message = self::$messages[ $status ];
 		}
+
+		return $message;
 	}
 }

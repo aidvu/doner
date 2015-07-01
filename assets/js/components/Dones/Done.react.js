@@ -10,8 +10,7 @@ var Done = React.createClass( {
 	},
 
 	_onStateClick: function () {
-		var done = this.props.data;
-		done.status = done.status == 1 ? 0 : 1;
+		var done = assign( {}, this.props.data, {status: this.props.data.status == 1 ? 0 : 1} );
 		DoneActions.update( done );
 	},
 

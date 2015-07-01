@@ -46,12 +46,12 @@ class API {
 	/**
 	 * @var array $variables Parsed variables from request
 	 */
-	private $variables = array();
+	public $variables = array();
 
 	/**
 	 * @var Response $response API Response Object
 	 */
-	private $response;
+	public $response;
 
 	/**
 	 * @var AuthorizationInterface $auth_class Used for request authorization
@@ -102,11 +102,11 @@ class API {
 				$e = new InternalErrorException( $e->getMessage() );
 			}
 
-			$this->response()->set_body( $e->get_message() );
-			$this->response()->set_status( $e->getCode() );
+			$this->response->set_body( $e->get_message() );
+			$this->response->set_status( $e->getCode() );
 		}
 
-		$this->response()->output();
+		$this->response->output();
 	}
 
 	/**
@@ -222,20 +222,6 @@ class API {
 		}
 
 		return false;
-	}
-
-	/**
-	 * @return array variables from current request
-	 */
-	public function get_variables() {
-		return $this->variables;
-	}
-
-	/**
-	 * @return Response API Response object
-	 */
-	public function response() {
-		return $this->response;
 	}
 
 	/**

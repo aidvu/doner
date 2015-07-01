@@ -20,12 +20,17 @@ class BaseModel {
 	/**
 	 * @var array $fields DB table fields
 	 */
-	protected static $fields;
+	protected static $fields = array();
 
 	/**
 	 * @var array $order_by DB order_by fields
 	 */
-	protected static $order_by;
+	protected static $order_by = array();
+
+	/**
+	 * @var array $additional_fields fields to pull from join tables
+	 */
+	protected static $additional_fields = array();
 
 	/**
 	 * Get a list of records from database filtered by parameters
@@ -38,7 +43,18 @@ class BaseModel {
 	public static function get( $parameters = array(), $limit = 0 ) {
 		$db = MySql::getInstance();
 
-		$query = "SELECT " . implode( ', ', static::$fields ) . " FROM " . static::$table;
+		$fields = array();
+		foreach ( static::$fields as $field ) {
+			$fields[] = static::$table . '.' . $field . ' as ' . $field;
+		}
+
+		$join_tables = array();
+		foreach ( static::$additional_fields as $additional_field ) {
+			$fields = array_merge( $fields, $additional_field['fields'] );
+			$join_tables[] = ' INNER JOIN ' . $additional_field['table'] . ' ON ' . $additional_field['on'];
+		}
+
+		$query = "SELECT " . implode( ', ', $fields ) . " FROM " . static::$table . implode( ' ', $join_tables );
 
 		$bindings = array();
 		if ( ! empty( $parameters ) ) {
@@ -46,17 +62,19 @@ class BaseModel {
 
 			$query_parts = array();
 			foreach ( $parameters as $parameter ) {
-				$query_parts[] = $parameter['field'] . ' ' . $parameter['operator'] . ' ? ';
-				$bindings[] = $parameter['value'];
+				if ( in_array( $parameter['field'], static::$fields ) ) {
+					$query_parts[] = static::$table . '.' . $parameter['field'] . ' ' . $parameter['operator'] . ' ? ';
+					$bindings[] = $parameter['value'];
+				}
 			}
-			$query .= implode(' AND ', $query_parts);
+			$query .= implode( ' AND ', $query_parts );
 		}
 
 		if ( ! empty( static::$order_by ) ) {
 			$query .= " ORDER BY " . implode( ', ', static::$order_by );
 		}
 
-		if (!empty($limit)) {
+		if ( ! empty( $limit ) ) {
 			$query .= " LIMIT $limit ";
 		}
 
@@ -121,8 +139,8 @@ class BaseModel {
 
 		if ( empty( $save_values['id'] ) ) {
 			$query = "INSERT INTO " . static::$table .
-			         " (" . implode( ", ", array_keys( $save_values ) ) . ") " .
-			         " VALUES (?" . str_repeat( ", ?", count( $save_values ) - 1 ) . ")";
+			            " (" . implode( ", ", array_keys( $save_values ) ) . ") " .
+			            " VALUES (?" . str_repeat( ", ?", count( $save_values ) - 1 ) . ")";
 			$bindings = array_values( $save_values );
 		} else {
 			$id = $save_values['id'];
@@ -156,22 +174,23 @@ class BaseModel {
 
 		if ( empty( $model ) ) {
 			$db->rollBack();
-			throw new InternalErrorException($db->errorInfo());
+			throw new InternalErrorException( $db->errorInfo() );
 		}
 
 		$db->commit();
 
-		$this->populate_model( (array) $model );
+		$this->populate_model( (array) $model, true );
 	}
 
 	/**
 	 * Populates model from a given key => value array based on $fields defined for the Model
 	 *
 	 * @param array $variables key => value fields to populate model with
+	 * @param boolean $skip_fields_check skip check if a field is in the Models $fields array
 	 */
-	public function populate_model( $variables ) {
+	public function populate_model( $variables, $skip_fields_check = false ) {
 		foreach ( $variables as $key => $value ) {
-			if ( in_array( $key, static::$fields ) ) {
+			if ( $skip_fields_check || in_array( $key, static::$fields ) ) {
 				$this->$key = $value;
 			}
 		}

@@ -67,7 +67,7 @@ var Done = React.createClass( {
 				</td>
 				<td className="col-xs-1">
 					<span className="badge pull-right">
-						{this.props.data.user_id}
+						{this.props.data.user}
 					</span>
 				</td>
 				<td className="col-xs-1">

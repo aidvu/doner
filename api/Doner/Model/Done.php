@@ -34,7 +34,19 @@ class Done extends BaseModel {
 	 */
 	protected static $order_by = array(
 		'created_at DESC',
-		'updated_at DESC',
+	);
+
+	/**
+	 * @var array $additional_fields fields to pull from join tables
+	 */
+	protected static $additional_fields = array(
+		array(
+			'fields' => array(
+				'users.name as user'
+			),
+			'table' => 'users',
+			'on' => 'dones.user_id = users.id'
+		),
 	);
 
 	public function save() {

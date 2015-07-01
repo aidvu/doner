@@ -9,6 +9,23 @@ var _dones = {};
 
 var url = 'api/v1/dones';
 
+/**
+ * Default error callback
+ */
+var error = function ( xhr, status, err ) {
+	console.error( url, status, err.toString() );
+};
+
+/**
+ * Default complete callback
+ */
+var complete = function () {
+	DoneStore.emitChange();
+};
+
+/**
+ * Load dones from server
+ */
 function load_dones() {
 	$.ajax( {
 		url: url,
@@ -18,18 +35,16 @@ function load_dones() {
 			for ( var done in data ) {
 				_dones[data[done].id] = data[done];
 			}
-		}.bind( this ),
-		error: function ( xhr, status, err ) {
-			console.error( url, status, err.toString() );
-		}.bind( this ),
-		complete: function () {
-			DoneStore.emitChange();
-		}.bind( this )
+		},
+		error,
+		complete
 	} );
 }
 
 /**
  * Create a Done item.
+ *
+ * @param  {int} status Status of the done
  * @param  {string} text The content of the Done
  */
 function create( status, text ) {
@@ -46,21 +61,16 @@ function create( status, text ) {
 		data: JSON.stringify( data ),
 		success: function ( data ) {
 			_dones[data.id] = data;
-		}.bind( this ),
-		error: function ( xhr, status, err ) {
-			console.error( url, status, err.toString() );
-		}.bind( this ),
-		complete: function () {
-			DoneStore.emitChange();
-		}.bind( this )
+		},
+		error,
+		complete
 	} );
 }
 
 /**
  * Update a Done item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
+ *
+ * @param {object} done An object literal containing the done to be updated
  */
 function update( done ) {
 	$.ajax( {
@@ -71,18 +81,15 @@ function update( done ) {
 		data: JSON.stringify( done ),
 		success: function ( data ) {
 			_dones[data.id] = assign( {}, _dones[data.id], data );
-		}.bind( this ),
-		error: function ( xhr, status, err ) {
-			console.error( url, status, err.toString() );
-		}.bind( this ),
-		complete: function () {
-			DoneStore.emitChange();
-		}.bind( this )
+		},
+		error,
+		complete
 	} );
 }
 
 /**
  * Delete a Done item.
+ *
  * @param  {string} id
  */
 function destroy( id ) {
@@ -91,26 +98,17 @@ function destroy( id ) {
 		type: 'DELETE',
 		success: function () {
 			delete _dones[id];
-		}.bind( this ),
-		error: function ( xhr, status, err ) {
-			console.error( url, status, err.toString() );
-		}.bind( this ),
-		complete: function () {
-			DoneStore.emitChange();
-		}.bind( this )
+		},
+		error,
+		complete
 	} );
 }
 
 var DoneStore = assign( {}, EventEmitter.prototype, {
-	/**
-	 * Load the Dones from the server
-	 */
-	loadInitial: function () {
-		loadDones();
-	},
 
 	/**
 	 * Get the entire collection of Dones.
+	 *
 	 * @return {object}
 	 */
 	getAll: function () {

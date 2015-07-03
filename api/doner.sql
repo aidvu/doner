@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS `doner`.`tags` ;
 
 CREATE TABLE IF NOT EXISTS `doner`.`tags` (
   `id` INT NOT NULL,
-  `name` VARCHAR(50) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `idx_name` USING BTREE (`name` ASC))
 ENGINE = InnoDB;
@@ -87,7 +87,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `doner`;
-INSERT INTO `doner`.`users` (`id`, `email`, `token`, `name`) VALUES (1, 'dream@t-com.me', 'auto-mata-2015', 'Auto Mata');
+INSERT INTO `doner`.`users` (`id`, `email`, `token`, `name`) VALUES (1, 'automata@gmail.me', 'auto-mata-2015', 'Auto Mata');
+INSERT INTO `doner`.`users` (`id`, `email`, `token`, `name`) VALUES (2, 'exmachina@gmail.com', 'ex-machina-2014', 'Ex Machina');
 
 COMMIT;
 
@@ -100,6 +101,8 @@ USE `doner`;
 INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (1, 1, 'Design DB for Doner', 1, '2015-06-18 00:10:00', NULL);
 INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (2, 1, 'Create API framework for Doner', 1, '2015-06-18 00:10:00', NULL);
 INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (3, 1, 'Start building the UI with React.js', 0, '2015-06-20 00:10:00', NULL);
+INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (4, 2, 'Check React.js', 1, '2015-06-21 00:10:00', NULL);
+INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (5, 2, 'Display username somewhere', 0, '2015-06-22 00:10:00', NULL);
 
 COMMIT;
 

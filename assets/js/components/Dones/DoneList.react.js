@@ -33,7 +33,7 @@ var DoneListContainer = React.createClass( {
 			<table className="table table-hover">
 				<thead>
 					<th colSpan="3">
-						{this.props.date}
+						{this.props.title}
 					</th>
 				</thead>
 				<tbody>
@@ -65,7 +65,7 @@ var DoneList = React.createClass( {
 			var date = this.state.dones[dateDones].date;
 			var dones = this.state.dones[dateDones].data;
 			doneList.push(
-				<DoneListContainer key={date} date={date} dones={dones} user={this.state.user}/>
+				<DoneListContainer key={date} title={date} dones={dones} user={this.state.user}/>
 			);
 		}
 

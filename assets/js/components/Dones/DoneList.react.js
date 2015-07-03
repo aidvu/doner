@@ -1,16 +1,33 @@
 var React = require( 'react' );
 
-var Done = require( './Done.react' );
-var DoneActions = require( '../../actions/DoneActions' );
+var DoneEdit = require( './DoneEdit.react' );
+var DoneEditDisabled = require( './DoneEditDisabled.react' );
 var DoneStore = require( '../../stores/DoneStore' );
+var LoginStore = require( '../../stores/LoginStore' );
+
+function getState() {
+	return {
+		dones: DoneStore.getAll(),
+		user: LoginStore.getUser()
+	};
+}
 
 var DoneListContainer = React.createClass( {
 	render: function () {
-		var doneList = this.props.data.map( function ( done ) {
-			return (
-				<Done key={done.id} data={done}/>
-			);
-		} );
+		var doneList = [];
+		for ( var key in this.props.dones ) {
+			var done = this.props.dones[key];
+
+			if ( done.user_id == this.props.user.id ) {
+				doneList.push(
+					<DoneEdit key={done.id} data={done}/>
+				);
+			} else {
+				doneList.push(
+					<DoneEditDisabled key={done.id} data={done}/>
+				);
+			}
+		}
 
 		return (
 			<table className="table table-hover">
@@ -29,28 +46,26 @@ var DoneListContainer = React.createClass( {
 
 var DoneList = React.createClass( {
 	componentDidMount: function () {
-		DoneActions.load();
 		DoneStore.addChangeListener( this._onChange );
+		LoginStore.addChangeListener( this._onChange );
 	},
 	componentWillUnmount: function () {
 		DoneStore.removeChangeListener( this._onChange );
+		LoginStore.removeChangeListener( this._onChange );
 	},
 	_onChange: function () {
-		var state = {
-			data: DoneStore.getAll()
-		};
-		this.setState( state );
+		this.setState( getState() );
 	},
 	getInitialState: function () {
-		return {data: []};
+		return getState();
 	},
 	render: function () {
 		var doneList = [];
-		for ( var date_dones in this.state.data ) {
-			var date = this.state.data[date_dones].date;
-			var dones = this.state.data[date_dones].data;
+		for ( var dateDones in this.state.dones ) {
+			var date = this.state.dones[dateDones].date;
+			var dones = this.state.dones[dateDones].data;
 			doneList.push(
-				<DoneListContainer key={date} date={date} data={dones} />
+				<DoneListContainer key={date} date={date} dones={dones} user={this.state.user}/>
 			);
 		}
 

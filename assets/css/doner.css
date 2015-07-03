@@ -14,3 +14,11 @@ body {
 .done-edit {
 	height: 20px;
 }
+
+.navbar-right {
+	margin-right: 15px;
+}
+
+.navbar-link {
+	font-weight: bold;
+}

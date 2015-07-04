@@ -40,4 +40,4 @@ For a production build run:
 
     npm run build
 
-And change the script to bundle.min.js in [index.html](https://github.com/aidvu/doner/blob/master/index.html#L34).  
+And change the script to bundle.min.js in [index.html](https://github.com/aidvu/doner/blob/master/index.html#L31).  

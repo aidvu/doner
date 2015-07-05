@@ -2,7 +2,7 @@ var React = require( 'react' );
 
 var ENTER_KEY_CODE = 13;
 
-var DoneEditText = React.createClass( {
+var DoneEditFieldText = React.createClass( {
 	getInitialState: function () {
 		return {
 			value: this.props.value || ''
@@ -55,4 +55,4 @@ var DoneEditText = React.createClass( {
 	}
 } );
 
-module.exports = DoneEditText;
+module.exports = DoneEditFieldText;

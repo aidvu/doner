@@ -21,3 +21,13 @@ body {
 .navbar-link {
 	font-weight: bold;
 }
+
+.filter div {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.bootstrap-tagsinput {
+	width: 100%;
+	margin: 10px 0 10px 0;
+}

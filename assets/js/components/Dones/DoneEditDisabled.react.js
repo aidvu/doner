@@ -1,12 +1,12 @@
 var React = require( 'react' );
-var DoneEditToggle = require( './DoneEditToggle.react' );
+var DoneEditFieldToggle = require( './DoneEditFieldToggle.react' );
 
 var DoneEditDisabled = React.createClass( {
 	render: function () {
 		return (
 			<tr>
 				<td className="col-xs-1">
-					<DoneEditToggle status={this.props.data.status}/>
+					<DoneEditFieldToggle status={this.props.data.status}/>
 				</td>
 				<td className="col-xs-9">
 					{this.props.data.text}

@@ -1,7 +1,7 @@
 var React = require( 'react' );
 var DoneActions = require( '../../actions/DoneActions' );
-var DoneEditText = require( './DoneEditText.react' );
-var DoneEditToggle = require( './DoneEditToggle.react' );
+var DoneEditFieldText = require( './DoneEditFieldText.react' );
+var DoneEditFieldToggle = require( './DoneEditFieldToggle.react' );
 var assign = require( 'object-assign' );
 
 var DoneEdit = React.createClass( {
@@ -42,14 +42,14 @@ var DoneEdit = React.createClass( {
 		var text = this.props.data.text;
 		if ( this.state.isEditing ) {
 			text = (
-				<DoneEditText onSave={this._onSave} value={this.props.data.text} />
+				<DoneEditFieldText onSave={this._onSave} value={this.props.data.text} />
 			);
 		}
 
 		return (
 			<tr>
 				<td className="col-xs-1">
-					<DoneEditToggle status={this.props.data.status} onClick={this._onStateClick} />
+					<DoneEditFieldToggle status={this.props.data.status} onClick={this._onStateClick} />
 				</td>
 				<td className="col-xs-10" onDoubleClick={this._onDoubleClick}>
 					{text}

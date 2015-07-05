@@ -31,7 +31,7 @@ var DoneForm = React.createClass( {
 			<div className="container">
 				<form className="done-form" onSubmit={this._handleSubmit}>
 					<div className="row">
-						<div className="col-xs-10">
+						<div className="col-sm-10 col-xs-9">
 							<div className="input-group">
 								<span className="input-group-addon">
 									<input ref="status" type="checkbox" onChange={this.handleChange} checked={this.state.checked} />
@@ -39,7 +39,7 @@ var DoneForm = React.createClass( {
 								<input ref="text" type="text" className="form-control" />
 							</div>
 						</div>
-						<div className="col-xs-1">
+						<div className="col-sm-1 col-xs-1">
 							<button type="submit" className="btn btn-primary">Save</button>
 						</div>
 					</div>

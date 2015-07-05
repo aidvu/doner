@@ -1,6 +1,6 @@
 var React = require( 'react' );
 
-var DoneEditToggle = React.createClass( {
+var DoneEditFieldToggle = React.createClass( {
 	render: function () {
 		var status = 'glyphicon-ok';
 		if ( this.props.status == 0 ) {
@@ -18,4 +18,4 @@ var DoneEditToggle = React.createClass( {
 	}
 } );
 
-module.exports = DoneEditToggle;
+module.exports = DoneEditFieldToggle;

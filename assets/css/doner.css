@@ -2,9 +2,8 @@ body {
 	padding-top: 75px;
 }
 
-.glyphicon {
+.pointer {
 	cursor: pointer;
-	margin-right: 5px;
 }
 
 .done-form {

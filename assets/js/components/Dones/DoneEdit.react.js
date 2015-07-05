@@ -1,6 +1,7 @@
 var React = require( 'react' );
 var DoneActions = require( '../../actions/DoneActions' );
 var DoneEditText = require( './DoneEditText.react' );
+var DoneEditToggle = require( './DoneEditToggle.react' );
 var assign = require( 'object-assign' );
 
 var DoneEdit = React.createClass( {
@@ -38,14 +39,6 @@ var DoneEdit = React.createClass( {
 	},
 
 	render: function () {
-
-		var status = 'glyphicon-ok';
-		if ( this.props.data.status == 0 ) {
-			status = 'glyphicon-unchecked'
-		}
-
-		var classes = 'glyphicon ' + status;
-
 		var text = this.props.data.text;
 		if ( this.state.isEditing ) {
 			text = (
@@ -56,13 +49,13 @@ var DoneEdit = React.createClass( {
 		return (
 			<tr>
 				<td className="col-xs-1">
-					<span onClick={this._onStateClick} className={classes} aria-hidden="true"></span>
+					<DoneEditToggle status={this.props.data.status} onClick={this._onStateClick} />
 				</td>
 				<td className="col-xs-10" onDoubleClick={this._onDoubleClick}>
 					{text}
 				</td>
 				<td className="col-xs-1">
-					<span onClick={this._onDestroyClick} className="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					<span onClick={this._onDestroyClick} className="glyphicon glyphicon-trash pointer" aria-hidden="true"></span>
 				</td>
 			</tr>
 		);

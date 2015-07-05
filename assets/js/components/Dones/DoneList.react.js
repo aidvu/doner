@@ -12,7 +12,7 @@ function getState() {
 	};
 }
 
-var DoneListContainer = React.createClass( {
+var DoneListItem = React.createClass( {
 	render: function () {
 		var doneList = [];
 		for ( var key in this.props.dones ) {
@@ -61,16 +61,26 @@ var DoneList = React.createClass( {
 	},
 	render: function () {
 		var doneList = [];
+
+		var title;
+		if (this.props.title) {
+			title = (
+				<h3>
+					{this.props.title}
+				</h3>
+			);
+		}
 		for ( var dateDones in this.state.dones ) {
 			var date = this.state.dones[dateDones].date;
 			var dones = this.state.dones[dateDones].data;
 			doneList.push(
-				<DoneListContainer key={date} title={date} dones={dones} user={this.state.user}/>
+				<DoneListItem key={date} title={date} dones={dones} user={this.state.user}/>
 			);
 		}
 
 		return (
 			<div>
+				{title}
 				{doneList}
 			</div>
 		);

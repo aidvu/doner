@@ -12,14 +12,14 @@ var url = 'api/v1/dones';
 /**
  * Default error callback
  */
-var error = function ( xhr, status, err ) {
+var errorFunction = function ( xhr, status, err ) {
 	console.error( url, status, err.toString() );
 };
 
 /**
  * Default complete callback
  */
-var complete = function () {
+var completeFunction = function () {
 	DoneStore.emitChange();
 };
 
@@ -38,8 +38,8 @@ function load_dones( parameters ) {
 				_dones[data[done].id] = data[done];
 			}
 		},
-		error,
-		complete
+		errorFunction,
+		completeFunction
 	} );
 }
 
@@ -64,8 +64,8 @@ function create( status, text ) {
 		success: function ( data ) {
 			_dones[data.id] = data;
 		},
-		error,
-		complete
+		errorFunction,
+		completeFunction
 	} );
 }
 
@@ -84,8 +84,8 @@ function update( done ) {
 		success: function ( data ) {
 			_dones[data.id] = assign( {}, _dones[data.id], data );
 		},
-		error,
-		complete
+		errorFunction,
+		completeFunction
 	} );
 }
 
@@ -101,8 +101,8 @@ function destroy( id ) {
 		success: function () {
 			delete _dones[id];
 		},
-		error,
-		complete
+		errorFunction,
+		completeFunction
 	} );
 }
 

@@ -6,12 +6,12 @@ var DoneFilterDatepicker = require( './DoneFilterDatepicker.react' );
 var DoneActions = require( '../../actions/DoneActions' );
 
 var DoneFilter = React.createClass( {
-	_onChange: function() {
+	_onChange: function () {
 		parameters = {
 			created_at: this.refs.datepicker.getValue(),
 			user_id: this.refs.typeahead.getValue()
 		};
-		DoneActions.load(parameters);
+		DoneActions.load( parameters );
 	},
 	/**
 	 * @return {object}

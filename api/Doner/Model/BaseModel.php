@@ -147,6 +147,8 @@ class BaseModel {
 	 * Insert or update model in DB
 	 *
 	 * @return int Number of rows affected
+	 *
+	 * @throws InternalErrorException
 	 */
 	public function save() {
 		$db = MySql::getInstance();

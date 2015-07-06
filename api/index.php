@@ -15,7 +15,27 @@ $api->add_route( 1, \Doner\API::HTTP_GET, 'users', function () use ( $api ) {
 } );
 
 $api->add_route( 1, \Doner\API::HTTP_GET, 'dones', function () use ( $api ) {
-	$api->response->set_body( \Doner\Model\Done::get() );
+	$variables = $api->variables;
+
+	$where = array();
+
+	if ( ! empty( $variables['user_id'] ) ) {
+		$where[] = array(
+			'field' => 'user_id',
+			'operator' => 'IN',
+			'value' => $variables['user_id'],
+		);
+	}
+
+	if ( ! empty( $variables['created_at'] ) ) {
+		$where[] = array(
+			'field' => 'DATE(dones.created_at)',
+			'operator' => 'IN',
+			'value' => $variables['created_at'],
+		);
+	}
+
+	$api->response->set_body( \Doner\Model\Done::get( null, $where ) );
 } );
 
 $api->add_route( 1, \Doner\API::HTTP_DELETE, 'dones/{id}', function () use ( $api ) {

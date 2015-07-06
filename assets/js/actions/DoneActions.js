@@ -6,9 +6,10 @@ var DoneActions = {
 	/**
 	 *
 	 */
-	load: function () {
+	load: function ( parameters ) {
 		AppDispatcher.dispatch( {
-			actionType: DonerConstants.DONE_LOAD
+			actionType: DonerConstants.DONE_LOAD,
+			parameters: parameters
 		} );
 	},
 

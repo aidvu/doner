@@ -8,7 +8,7 @@ var DoneActions = require( '../actions/DoneActions' );
 var Doner = React.createClass( {
 	componentDidMount: function () {
 		LoginActions.loadUser();
-		DoneActions.load();
+		DoneActions.load( {} );
 	},
 	render: function () {
 		return (

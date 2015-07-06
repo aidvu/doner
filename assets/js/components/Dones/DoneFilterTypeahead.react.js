@@ -1,6 +1,9 @@
 var React = require( 'react' );
 
 var DoneFilterTypeahead = React.createClass( {
+	getValue: function () {
+		return $('#' + this.props.name).val();
+	},
 	componentDidMount: function() {
 		// constructs the suggestion engine
 		var data = new Bloodhound({
@@ -10,9 +13,10 @@ var DoneFilterTypeahead = React.createClass( {
 		});
 		data.initialize();
 
-		$('#' + this.props.name + '-input').on('itemAdded itemRemoved', function(event) {
-			console.log($(event.target).tagsinput('items'));
-			console.log($(event.target).val());
+		var onChange = this.props.onChange;
+
+		$('#' + this.props.name).on('itemAdded itemRemoved', function(event) {
+			onChange();
 		}).tagsinput({
 			freeInput: false,
 			itemValue: this.props.value,
@@ -36,7 +40,7 @@ var DoneFilterTypeahead = React.createClass( {
 	 * @return {object}
 	 */
 	render: function () {
-		var id = this.props.name + '-input';
+		var id = this.props.name;
 
 		return (
 			<div className="typeahead">

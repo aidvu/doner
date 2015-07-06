@@ -26,12 +26,14 @@ var complete = function () {
 /**
  * Load dones from server
  */
-function load_dones() {
+function load_dones( parameters ) {
 	$.ajax( {
 		url: url,
 		dataType: 'json',
+		data: parameters,
 		type: 'GET',
 		success: function ( data ) {
+			_dones = {};
 			for ( var done in data ) {
 				_dones[data[done].id] = data[done];
 			}
@@ -175,7 +177,7 @@ AppDispatcher.register( function ( action ) {
 			break;
 
 		case DonerConstants.DONE_LOAD:
-			load_dones();
+			load_dones( action.parameters );
 			break;
 
 		default:

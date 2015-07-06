@@ -35,13 +35,13 @@ class BaseModel {
 	/**
 	 * Get a list of records from database filtered by parameters
 	 *
-	 * @param array $select_fields fields to fetch or empty array to fetch all fields for Model
+	 * @param array|null $select_fields fields to fetch or null to fetch all fields for Model
 	 * @param array $parameters query parameters
 	 * @param int $limit number of records to be returned by query
 	 *
 	 * @return array fetched rows from DB
 	 */
-	public static function get( $select_fields = array(), $parameters = array(), $limit = 0 ) {
+	public static function get( $select_fields = null, $parameters = array(), $limit = 0 ) {
 		$db = MySql::getInstance();
 
 		if ( empty( $select_fields ) ) {
@@ -67,9 +67,25 @@ class BaseModel {
 
 			$query_parts = array();
 			foreach ( $parameters as $parameter ) {
-				if ( in_array( $parameter['field'], static::$fields ) ) {
-					$query_parts[] = static::$table . '.' . $parameter['field'] . ' ' . $parameter['operator'] . ' ? ';
-					$bindings[] = $parameter['value'];
+				if ( in_array( $parameter['field'], static::$fields, true ) ) {
+					$parameter['field'] = static::$table . '.' . $parameter['field'];
+				}
+
+				$query_part = $parameter['field'] . ' ' . $parameter['operator'] . ' ? ';
+				$binding = $parameter['value'];
+
+				if ( strtoupper($parameter['operator']) === 'IN' ) {
+					$query_part = $parameter['field'] . ' ' . $parameter['operator'] . ' ( ';
+					$query_part .= '?' . str_repeat(',?', sizeof($parameter['value']) - 1);
+					$query_part .= ' ) ';
+					$binding = $parameter['value'];
+				}
+
+				$query_parts[] = $query_part;
+				if (is_array($binding)) {
+					$bindings = array_merge($bindings, $binding);
+				} else {
+					$bindings[] = $binding;
 				}
 			}
 			$query .= implode( ' AND ', $query_parts );
@@ -93,14 +109,15 @@ class BaseModel {
 	/**
 	 * Fetch a single record from DB filtered by parameters
 	 *
+	 * @param array|null $select_fields fields to fetch or null to fetch all fields for Model
 	 * @param array $parameters query parameters
 	 *
 	 * @return BaseModel|null fetched model or null if it doesn't exist
 	 */
-	public static function get_one( $parameters ) {
+	public static function get_one( $select_fields = null, $parameters ) {
 		$model = null;
 
-		$models = static::get( array(), $parameters, 1 );
+		$models = static::get( $select_fields, $parameters, 1 );
 		if ( ! empty( $models ) ) {
 			$model = $models[0];
 		}
@@ -168,6 +185,7 @@ class BaseModel {
 		}
 
 		$model = static::get_one(
+			null,
 			array(
 				array(
 					'field' => 'id',

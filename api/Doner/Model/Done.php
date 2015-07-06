@@ -74,8 +74,9 @@ class Done extends BaseModel {
 	 *
 	 * @throws AuthorizationException
 	 */
-	public static function is_owner($id, $user_id) {
+	public static function is_owner( $id, $user_id ) {
 		$model = static::get_one(
+			array( 'id' ),
 			array(
 				array(
 					'field' => 'id',
@@ -90,7 +91,7 @@ class Done extends BaseModel {
 			)
 		);
 
-		if (empty($model)) {
+		if ( empty( $model ) ) {
 			throw new AuthorizationException();
 		}
 	}

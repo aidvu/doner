@@ -29,6 +29,7 @@ class CookieAuthorization implements AuthorizationInterface {
 		$auth_cookie = $_COOKIE['doner_cookie'];
 
 		$this->user = User::get_one(
+			array( 'id', 'name', 'email' ),
 			array(
 				array(
 					'field' => 'token',

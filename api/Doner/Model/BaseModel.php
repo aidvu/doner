@@ -35,23 +35,28 @@ class BaseModel {
 	/**
 	 * Get a list of records from database filtered by parameters
 	 *
+	 * @param array $select_fields fields to fetch or empty array to fetch all fields for Model
 	 * @param array $parameters query parameters
 	 * @param int $limit number of records to be returned by query
 	 *
 	 * @return array fetched rows from DB
 	 */
-	public static function get( $parameters = array(), $limit = 0 ) {
+	public static function get( $select_fields = array(), $parameters = array(), $limit = 0 ) {
 		$db = MySql::getInstance();
 
+		if ( empty( $select_fields ) ) {
+			$select_fields = static::$fields;
+		}
+
 		$fields = array();
-		foreach ( static::$fields as $field ) {
+		foreach ( $select_fields as $field ) {
 			$fields[] = static::$table . '.' . $field . ' as ' . $field;
 		}
 
 		$join_tables = array();
 		foreach ( static::$additional_fields as $additional_field ) {
 			$fields = array_merge( $fields, $additional_field['fields'] );
-			$join_tables[] = ' INNER JOIN ' . $additional_field['table'] . ' ON ' . $additional_field['on'];
+			$join_tables[] = ' INNER JOIN ' . $additional_field['join'];
 		}
 
 		$query = "SELECT " . implode( ', ', $fields ) . " FROM " . static::$table . implode( ' ', $join_tables );
@@ -95,7 +100,7 @@ class BaseModel {
 	public static function get_one( $parameters ) {
 		$model = null;
 
-		$models = static::get( $parameters, 1 );
+		$models = static::get( array(), $parameters, 1 );
 		if ( ! empty( $models ) ) {
 			$model = $models[0];
 		}

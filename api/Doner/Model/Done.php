@@ -42,10 +42,9 @@ class Done extends BaseModel {
 	protected static $additional_fields = array(
 		array(
 			'fields' => array(
-				'users.name as user'
+				'users.name AS user'
 			),
-			'table' => 'users',
-			'on' => 'dones.user_id = users.id'
+			'join' => 'users ON dones.user_id = users.id'
 		),
 	);
 

@@ -10,6 +10,10 @@ $api->add_route( 1, \Doner\API::HTTP_GET, 'me', function () use ( $api ) {
 	$api->response->set_body( $api->get_user() );
 } );
 
+$api->add_route( 1, \Doner\API::HTTP_GET, 'users', function () use ( $api ) {
+	$api->response->set_body( \Doner\Model\User::get() );
+} );
+
 $api->add_route( 1, \Doner\API::HTTP_GET, 'dones', function () use ( $api ) {
 	$api->response->set_body( \Doner\Model\Done::get() );
 } );

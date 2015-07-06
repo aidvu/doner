@@ -1,34 +1,17 @@
 var React = require( 'react' );
 
-var DoneFilter = React.createClass( {
-	getInitialState: function () {
-		return {
-		};
-	},
-	componentDidMount: function() {
-		$('#datepicker').datepicker({
-			multidate: true,
-			todayHighlight: true
-		}).on('changeDate', function(e) {
-			console.log(e.dates);
-		});
+var DoneFilterTypeahead = require( './DoneFilterTypeahead.react' );
+var DoneFilterDatepicker = require( './DoneFilterDatepicker.react' );
 
-		$('#users-input').on('itemAdded itemRemoved', function(event) {
-			console.log($("#users-input").tagsinput('items'));
-			console.log($("#users-input").val());
-		});
-	},
+var DoneFilter = React.createClass( {
 	/**
 	 * @return {object}
 	 */
 	render: function () {
 		return (
 			<div className="filter">
-				<div id="datepicker">
-				</div>
-				<div id="users">
-					<select placeholder="Filter dones by user" id="users-input" multiple data-role="tagsinput" />
-				</div>
+				<DoneFilterDatepicker name='filter-datepicker' />
+				<DoneFilterTypeahead url='/api/v1/users' name='filter-users' text='name' value='id' />
 			</div>
 		);
 	}

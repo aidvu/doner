@@ -1,13 +1,13 @@
 <?php
 
 // Database host
-define('HOST', '');
+define('DATABASE_HOST', '');
 // Database name
-define('DATABASE', '');
+define('DATABASE_NAME', '');
 // Database username
-define('USERNAME', '');
+define('DATABASE_USERNAME', '');
 // Database password
-define('PASSWORD', '');
+define('DATABASE_PASSWORD', '');
 
 // Authorization Class
 define('AUTH_CLASS', '');

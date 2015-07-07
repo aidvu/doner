@@ -20,7 +20,7 @@ var DoneFilter = React.createClass( {
 		return (
 			<div className="filter">
 				<DoneFilterDatepicker ref="datepicker" name='filter-datepicker' onChange={this._onChange} />
-				<DoneFilterTypeahead ref="typeahead" url='/api/v1/users' name='filter-users' text='name' value='id' onChange={this._onChange} />
+				<DoneFilterTypeahead ref="typeahead" url='api/v1/users' name='filter-users' text='name' value='id' onChange={this._onChange} />
 			</div>
 		);
 	}

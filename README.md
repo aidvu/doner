@@ -18,8 +18,9 @@ Schema create SQL with some demo data is in [api/doner.sql](https://github.com/a
 
 ### config.php
 
-DB settings are the usual stuff.    
-Auth Class should be a namespaced class name, e.g.: ```\Doner\Authorization\CookieAuthorization```  
+DB settings are the usual stuff.  
+AUTH_CLASS should be a namespaced class name, e.g.: ```\Doner\Authorization\CookieAuthorization```  
+API_PATH relative to the website root, e.g. http://somedomain.com/doner API_PATH is /doner/api, http://doner.com is /api  
 
 ## UI Setup
 

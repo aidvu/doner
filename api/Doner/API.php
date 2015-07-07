@@ -139,15 +139,20 @@ class API {
 			}
 		}
 
-		$request_uri = explode( '/', trim( $request_uri, '/' ) );
-
-		if ( count( $request_uri ) < 3 || $request_uri[0] != 'api' ) {
+		if ( 0 !== strpos( $request_uri, API_PATH ) ) {
 			throw new NotFoundException();
 		}
-		unset( $request_uri[0] );
 
-		$this->version = $request_uri[1];
-		unset( $request_uri[1] );
+		$request_uri = substr( $request_uri, strlen( API_PATH ) );
+
+		$request_uri = explode( '/', trim( $request_uri, '/' ) );
+
+		if ( count( $request_uri ) < 2 ) {
+			throw new NotFoundException();
+		}
+
+		$this->version = $request_uri[0];
+		unset( $request_uri[0] );
 
 		$this->path = implode( '/', $request_uri );
 

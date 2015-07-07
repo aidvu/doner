@@ -34,8 +34,8 @@ function loadUser() {
 		success: function ( data ) {
 			user = data;
 		},
-		error,
-		complete
+		error: error,
+		complete: complete
 	} );
 }
 

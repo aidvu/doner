@@ -1,13 +1,17 @@
 # doner
 A Done List App.  
-  
+
 Backend is PHP/MySQL written from scratch.  
 UI is built using React.js/Flux.
 
 ## DB Setup
-Schema create SQL with some demo data is in [api/doner.sql](https://github.com/aidvu/doner/blob/master/api/doner.sql)  
+Schema create SQL is in [api/doner.sql](https://github.com/aidvu/doner/blob/master/api/doner.sql)  
 
-    mysql -u[user] -p[pass] < api/doner.sql
+    mysql -u[user] -p[pass] [db] < api/doner.sql
+
+Some demo data is in [api/doner_data.sql](https://github.com/aidvu/doner/blob/master/api/doner_data.sql)
+
+    mysql -u[user] -p[pass] [db] < api/doner_data.sql
 
 ## API Setup
 

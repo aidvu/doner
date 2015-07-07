@@ -1,108 +1,87 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP SCHEMA IF EXISTS `doner` ;
-CREATE SCHEMA IF NOT EXISTS `doner` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `doner` ;
+--
+-- Table structure for table `dones`
+--
 
--- -----------------------------------------------------
--- Table `doner`.`users`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `doner`.`users` ;
-
-CREATE TABLE IF NOT EXISTS `doner`.`users` (
-  `id` INT NOT NULL,
-  `email` VARCHAR(45) NULL,
-  `token` VARCHAR(45) NULL,
-  `name` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `doner`.`dones`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `doner`.`dones` ;
-
-CREATE TABLE IF NOT EXISTS `doner`.`dones` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
-  `text` TEXT NULL,
-  `status` TINYINT(1) NULL,
-  `created_at` DATETIME NOT NULL,
-  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+DROP TABLE IF EXISTS `dones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dones` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `text` text,
+  `status` tinyint(1) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `fk_dones_users_idx` (`user_id` ASC),
-  CONSTRAINT `fk_dones_users`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `doner`.`users` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  KEY `fk_dones_users_idx` (`user_id`),
+  CONSTRAINT `fk_dones_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `dones_tags`
+--
 
--- -----------------------------------------------------
--- Table `doner`.`tags`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `doner`.`tags` ;
+DROP TABLE IF EXISTS `dones_tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dones_tags` (
+  `dones_id` int(11) NOT NULL,
+  `tags_id` int(11) NOT NULL,
+  PRIMARY KEY (`dones_id`,`tags_id`),
+  KEY `fk_dones_tags_tags_idx` (`tags_id`),
+  CONSTRAINT `fk_dones_tags_dones` FOREIGN KEY (`dones_id`) REFERENCES `dones` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_dones_tags_tags` FOREIGN KEY (`tags_id`) REFERENCES `tags` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE IF NOT EXISTS `doner`.`tags` (
-  `id` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
+--
+-- Table structure for table `tags`
+--
+
+DROP TABLE IF EXISTS `tags`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tags` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `idx_name` USING BTREE (`name` ASC))
-ENGINE = InnoDB;
+  KEY `idx_name` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `users`
+--
 
--- -----------------------------------------------------
--- Table `doner`.`dones_tags`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `doner`.`dones_tags` ;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `token` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-CREATE TABLE IF NOT EXISTS `doner`.`dones_tags` (
-  `dones_id` INT NOT NULL,
-  `tags_id` INT NOT NULL,
-  PRIMARY KEY (`dones_id`, `tags_id`),
-  INDEX `fk_dones_tags_tags_idx` (`tags_id` ASC),
-  CONSTRAINT `fk_dones_tags_dones`
-    FOREIGN KEY (`dones_id`)
-    REFERENCES `doner`.`dones` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_dones_tags_tags`
-    FOREIGN KEY (`tags_id`)
-    REFERENCES `doner`.`tags` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
--- -----------------------------------------------------
--- Data for table `doner`.`users`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `doner`;
-INSERT INTO `doner`.`users` (`id`, `email`, `token`, `name`) VALUES (1, 'automata@gmail.me', 'auto-mata-2015', 'Auto Mata');
-INSERT INTO `doner`.`users` (`id`, `email`, `token`, `name`) VALUES (2, 'exmachina@gmail.com', 'ex-machina-2014', 'Ex Machina');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `doner`.`dones`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `doner`;
-INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (1, 1, 'Design DB for Doner', 1, '2015-06-18 00:10:00', NULL);
-INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (2, 1, 'Create API framework for Doner', 1, '2015-06-18 00:10:00', NULL);
-INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (3, 1, 'Start building the UI with React.js', 0, '2015-06-20 00:10:00', NULL);
-INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (4, 2, 'Check React.js', 1, '2015-06-21 00:10:00', NULL);
-INSERT INTO `doner`.`dones` (`id`, `user_id`, `text`, `status`, `created_at`, `updated_at`) VALUES (5, 2, 'Display username somewhere', 0, '2015-06-22 00:10:00', NULL);
-
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

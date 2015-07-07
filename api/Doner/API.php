@@ -156,28 +156,33 @@ class API {
 
 		$this->path = implode( '/', $request_uri );
 
-		if ( ! empty( $this->routes[ $this->version ] ) ) {
-			$path_explode = explode( '/', $this->path );
-			if ( ! empty( $this->routes[ $this->version ][ $this->http_method ] ) ) {
-				foreach ( $this->routes[ $this->version ][ $this->http_method ] as $route ) {
-					$route_explode = explode( '/', $route['path'] );
-					if ( count( $route_explode ) !== count( $path_explode ) ) {
-						continue;
-					}
-					foreach ( $route_explode as $key => $value ) {
-						if ( $this->is_route_variable( $value ) ) {
-							continue;
-						} else if ( $route_explode[ $key ] !== $path_explode[ $key ] ) {
-							break;
-						}
+		if ( empty( $this->routes[ $this->version ] ) ) {
+			throw new NotFoundException();
+		}
 
-						$this->route = $route;
-					}
+		if ( empty( $this->routes[ $this->version ][ $this->http_method ] ) ) {
+			throw new NotFoundException();
+		}
 
-					if ( ! empty( $this->route ) ) {
-						break;
-					}
+		// Search for given route in registered routes
+		$path_explode = explode( '/', $this->path );
+		foreach ( $this->routes[ $this->version ][ $this->http_method ] as $route ) {
+			$route_explode = explode( '/', $route['path'] );
+			if ( count( $route_explode ) !== count( $path_explode ) ) {
+				continue;
+			}
+			foreach ( $route_explode as $key => $value ) {
+				if ( $this->is_route_variable( $value ) ) {
+					continue;
+				} else if ( $route_explode[ $key ] !== $path_explode[ $key ] ) {
+					break;
 				}
+
+				$this->route = $route;
+			}
+
+			if ( ! empty( $this->route ) ) {
+				break;
 			}
 		}
 

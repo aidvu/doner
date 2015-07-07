@@ -14,7 +14,7 @@ Schema create SQL with some demo data is in [api/doner.sql](https://github.com/a
 ### Class Autoloader
 [Composer](https://getcomposer.org/) is used for autoloading, so you need to get it and run in api/  
 
-    php composer.phar update
+    php composer.phar update -o
 
 ### config.php
 
@@ -40,4 +40,4 @@ For a production build run:
 
     npm run build
 
-And change the script to bundle.min.js in [index.html](https://github.com/aidvu/doner/blob/master/index.html#L31).  
+And change the script to bundle.min.js in [index.html](https://github.com/aidvu/doner/blob/master/index.html#L45).  

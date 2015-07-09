@@ -10,8 +10,18 @@ use Doner\Exception\JSONFormatException;
 use Doner\Exception\NotFoundException;
 use Doner\Http\Response;
 
+/**
+ * Class API
+ *
+ * REST API class for registering, parsing and firing routes
+ *
+ * @package Doner
+ */
 class API {
 
+	/**
+	 * HTTP Method constants
+	 */
 	const HTTP_GET = 'GET';
 	const HTTP_POST = 'POST';
 	const HTTP_PUT = 'PUT';
@@ -65,6 +75,9 @@ class API {
 		'application/json',
 	);
 
+	/**
+	 * @param AuthorizationInterface $auth_class Interface for authorizing users
+	 */
 	public function __construct($auth_class) {
 		$this->auth_class = $auth_class;
 		$this->response = new Response();
@@ -86,7 +99,7 @@ class API {
 	}
 
 	/**
-	 * Run the API
+	 * Run the API request
 	 */
 	public function run() {
 		try {
@@ -156,11 +169,7 @@ class API {
 
 		$this->path = implode( '/', $request_uri );
 
-		if ( empty( $this->routes[ $this->version ] ) ) {
-			throw new NotFoundException();
-		}
-
-		if ( empty( $this->routes[ $this->version ][ $this->http_method ] ) ) {
+		if ( empty( $this->routes[ $this->version ] ) || empty( $this->routes[ $this->version ][ $this->http_method ] ) ) {
 			throw new NotFoundException();
 		}
 

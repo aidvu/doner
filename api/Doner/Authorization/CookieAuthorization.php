@@ -5,6 +5,11 @@ namespace Doner\Authorization;
 use Doner\Exception\AuthorizationException;
 use Doner\Model\User;
 
+/**
+ * Class CookieAuthorization
+ *
+ * @package Doner\Authorization
+ */
 class CookieAuthorization implements AuthorizationInterface {
 
 	/**
@@ -20,7 +25,7 @@ class CookieAuthorization implements AuthorizationInterface {
 	}
 
 	/**
-	 * Authorize user by some means
+	 * Authorize user with a cookie
 	 */
 	public function authorize() {
 		if ( empty( $_COOKIE['doner_cookie'] ) ) {

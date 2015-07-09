@@ -4,8 +4,18 @@ namespace Doner;
 
 use Doner\Exception\ValidationException;
 
+/**
+ * Class Validator
+ *
+ * Validator for various data types
+ *
+ * @package Doner
+ */
 class Validator {
 
+	/**
+	 * Validator type constants
+	 */
 	const INT = 'int';
 	const STRING = 'string';
 	const REQUIRED = 'required';

@@ -4,6 +4,7 @@ namespace Doner\Http;
 
 /**
  * Class Response
+ *
  * Rest API Response
  *
  * @package Doner\Http

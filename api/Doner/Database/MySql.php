@@ -2,19 +2,34 @@
 
 namespace Doner\Database;
 
+/**
+ * Class MySql
+ *
+ * Singleton PDO for MySQL wrapper
+ *
+ * @package Doner\Database
+ */
 class MySql {
-	// Hold an instance of the class
+	/**
+	 * @var \PDO $instance Singleton instance
+	 */
 	private static $instance;
 
-	// Disable clone function
+	/**
+	 * Disable clone function
+	 */
 	private function __clone() {
 	}
 
-	// A private constructor; prevents direct creation of object
+	/**
+	 * A private constructor; prevents direct creation of object
+	 */
 	private function __construct() {
 	}
 
-	// The singleton method
+	/**
+	 * @return \PDO MySQL PDO
+	 */
 	public static function getInstance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new \PDO( 'mysql:host=' . DATABASE_HOST . ';dbname=' . DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD );

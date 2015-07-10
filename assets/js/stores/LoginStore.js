@@ -5,15 +5,21 @@ var assign = require( 'object-assign' );
 
 var CHANGE_EVENT = 'change';
 
-var url = 'api/v1/me';
+var _url = 'api/v1/me';
 
-var user = {};
+/**
+ * Object containing currently logged in user
+ *
+ * @type {Object}
+ * @private
+ */
+var _user = {};
 
 /**
  * Default error callback
  */
 var error = function ( xhr, status, err ) {
-	console.error( url, status, err.toString() );
+	console.error( _url, status, err.toString() );
 };
 
 /**
@@ -28,11 +34,11 @@ var complete = function () {
  */
 function loadUser() {
 	$.ajax( {
-		url: url,
+		url: _url,
 		dataType: 'json',
 		type: 'GET',
 		success: function ( data ) {
-			user = data;
+			_user = data;
 		},
 		error: error,
 		complete: complete
@@ -44,10 +50,10 @@ var LoginStore = assign( {}, EventEmitter.prototype, {
 	/**
 	 * Get the logged user
 	 *
-	 * @return {object}
+	 * @return {Object}
 	 */
 	getUser: function () {
-		return user;
+		return _user;
 	},
 
 	emitChange: function () {

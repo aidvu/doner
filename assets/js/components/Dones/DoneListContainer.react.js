@@ -4,6 +4,9 @@ var DoneForm = require( './DoneForm.react' );
 var DoneList = require( './DoneList.react' );
 var DoneFilter = require( './DoneFilter.react' );
 
+/**
+ * Done List View which contains a new done creation component, filtering component, and the done display component
+ */
 var DoneListContainer = React.createClass( {
 	render: function () {
 		return (

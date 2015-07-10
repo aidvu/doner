@@ -3,17 +3,34 @@ var EventEmitter = require( 'events' ).EventEmitter;
 var DonerConstants = require( '../constants/DonerConstants' );
 var assign = require( 'object-assign' );
 
+/**
+ * Change Event constant
+ *
+ * @type {string}
+ */
 var CHANGE_EVENT = 'change';
 
+/**
+ * Object containing loaded dones, done.id is used as a key
+ *
+ * @type {Object}
+ * @private
+ */
 var _dones = {};
 
-var url = 'api/v1/dones';
+/**
+ * Dones API endpoint
+ *
+ * @type {string}
+ * @private
+ */
+var _url = 'api/v1/dones';
 
 /**
  * Default error callback
  */
 var error = function ( xhr, status, err ) {
-	console.error( url, status, err.toString() );
+	console.error( _url, status, err.toString() );
 };
 
 /**
@@ -23,12 +40,17 @@ var complete = function () {
 	DoneStore.emitChange();
 };
 
+
 /**
- * Load dones from server
+ * Load dones from server filtered by parameters
+ *
+ * @param {Object} parameters
+ * @param {array} parameters.user_id array of done owners
+ * @param {array} parameters.created_at array of date strings
  */
 function load_dones( parameters ) {
 	$.ajax( {
-		url: url,
+		url: _url,
 		dataType: 'json',
 		data: parameters,
 		type: 'GET',
@@ -46,8 +68,8 @@ function load_dones( parameters ) {
 /**
  * Create a Done item.
  *
- * @param  {int} status Status of the done
- * @param  {string} text The content of the Done
+ * @param {int} status 1 done, 0 to do
+ * @param {string} text the content
  */
 function create( status, text ) {
 	var data = {
@@ -56,7 +78,7 @@ function create( status, text ) {
 	};
 
 	$.ajax( {
-		url: url,
+		url: _url,
 		dataType: 'json',
 		contentType: "application/json",
 		type: 'POST',
@@ -72,11 +94,14 @@ function create( status, text ) {
 /**
  * Update a Done item.
  *
- * @param {object} done An object literal containing the done to be updated
+ * @param {Object} done An object literal containing the done to be updated
+ * @param {int} done.id id of the done to be updated
+ * @param {int} done.status status 1 done, 0 to do
+ * @param {string} done.text the content
  */
 function update( done ) {
 	$.ajax( {
-		url: url + '/' + done.id,
+		url: _url + '/' + done.id,
 		dataType: 'json',
 		contentType: "application/json",
 		type: 'PUT',
@@ -92,11 +117,11 @@ function update( done ) {
 /**
  * Delete a Done item.
  *
- * @param  {string} id
+ * @param {string} id
  */
 function destroy( id ) {
 	$.ajax( {
-		url: url + '/' + id,
+		url: _url + '/' + id,
 		type: 'DELETE',
 		success: function () {
 			delete _dones[id];
@@ -109,9 +134,10 @@ function destroy( id ) {
 var DoneStore = assign( {}, EventEmitter.prototype, {
 
 	/**
-	 * Get the entire collection of Dones.
+	 * Get the currently loaded dones, returned as an array of objects
+	 * Each objects contains date (YYYY-MM-DD formatted), and data containing all the dones for given date
 	 *
-	 * @return {object}
+	 * @return {Array}
 	 */
 	getAll: function () {
 		var data_objects = {};
@@ -139,6 +165,9 @@ var DoneStore = assign( {}, EventEmitter.prototype, {
 		return organized_data;
 	},
 
+	/**
+	 * Emit the change event
+	 */
 	emitChange: function () {
 		this.emit( CHANGE_EVENT );
 	},

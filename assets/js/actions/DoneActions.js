@@ -4,7 +4,11 @@ var DonerConstants = require( '../constants/DonerConstants' );
 var DoneActions = {
 
 	/**
+	 * Load dones filtered by parameters
 	 *
+	 * @param {Object} parameters
+	 * @param {Array} parameters.user_id array of done owners
+	 * @param {Array} parameters.created_at array of date strings
 	 */
 	load: function ( parameters ) {
 		AppDispatcher.dispatch( {
@@ -14,8 +18,10 @@ var DoneActions = {
 	},
 
 	/**
-	 * @param  {int} status
-	 * @param  {string} text
+	 * Create a new done
+	 *
+	 * @param  {int} status 1 done, 0 to do
+	 * @param  {string} text the content
 	 */
 	create: function ( status, text ) {
 		AppDispatcher.dispatch( {
@@ -26,7 +32,12 @@ var DoneActions = {
 	},
 
 	/**
+	 * Update an existing done
+	 *
 	 * @param  {object} done
+	 * @param  {int} done.id id of the done to be updated
+	 * @param  {int} done.status status 1 done, 0 to do
+	 * @param  {string} done.text the content
 	 */
 	update: function ( done ) {
 		AppDispatcher.dispatch( {
@@ -36,6 +47,8 @@ var DoneActions = {
 	},
 
 	/**
+	 * Delete a done
+	 *
 	 * @param  {string} id
 	 */
 	destroy: function ( id ) {

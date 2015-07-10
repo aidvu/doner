@@ -1,6 +1,11 @@
 var React = require( 'react' );
 var LoginStore = require( '../stores/LoginStore' );
 
+/**
+ * Retrieve the currently logged user from the LoginStore
+ *
+ * @returns {Object}
+ */
 function getUser() {
 	return LoginStore.getUser();
 }

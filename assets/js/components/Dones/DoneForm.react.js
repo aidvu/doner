@@ -2,6 +2,9 @@ var React = require( 'react' );
 var DoneActions = require( '../../actions/DoneActions' );
 var DoneStore = require( '../../stores/DoneStore' );
 
+/**
+ * Done creation component
+ */
 var DoneForm = React.createClass( {
 	_handleSubmit: function ( e ) {
 		e.preventDefault();
@@ -18,9 +21,8 @@ var DoneForm = React.createClass( {
 	},
 	_onChange: function () {
 		React.findDOMNode( this.refs.text ).value = '';
-		React.findDOMNode( this.refs.text ).focus();
 	},
-	handleChange: function () {
+	_handleChange: function () {
 		this.setState( {checked: event.target.checked} );
 	},
 	getInitialState: function () {
@@ -34,7 +36,7 @@ var DoneForm = React.createClass( {
 						<div className="col-sm-10 col-xs-9">
 							<div className="input-group">
 								<span className="input-group-addon">
-									<input ref="status" type="checkbox" onChange={this.handleChange} checked={this.state.checked} />
+									<input ref="status" type="checkbox" onChange={this._handleChange} checked={this.state.checked} />
 								</span>
 								<input ref="text" type="text" className="form-control" />
 							</div>

@@ -12,6 +12,13 @@ function getState() {
 	};
 }
 
+/**
+ * Displays the given dones in a table. Dones owned by given user are editable.
+ *
+ * @param {string} title under which the dones are grouped, optional
+ * @param {Object} user currently logged in
+ * @param {Array} dones of Done objects to be shown
+ */
 var DoneListItem = React.createClass( {
 	render: function () {
 		var doneList = [];
@@ -29,13 +36,19 @@ var DoneListItem = React.createClass( {
 			}
 		}
 
-		return (
-			<table className="table table-hover">
+		var head;
+		if ( this.props.title ) {
+			head = (
 				<thead>
 					<th colSpan="3">
 						{this.props.title}
 					</th>
 				</thead>
+			);
+		}
+		return (
+			<table className="table table-hover">
+				{head}
 				<tbody>
 					{doneList}
 				</tbody>
@@ -44,6 +57,11 @@ var DoneListItem = React.createClass( {
 	}
 } );
 
+/**
+ * Pulls the currently loaded Dones from the store, and displays them grouped by date, using DoneListItem
+ *
+ * @param {string} title in case we want to show multiple lists, or use it for displaying dones under a tag
+ */
 var DoneList = React.createClass( {
 	componentDidMount: function () {
 		DoneStore.addChangeListener( this._onChange );

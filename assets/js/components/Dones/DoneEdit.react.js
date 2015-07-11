@@ -4,6 +4,9 @@ var DoneEditFieldText = require( './DoneEditFieldText.react' );
 var DoneEditFieldToggle = require( './DoneEditFieldToggle.react' );
 var assign = require( 'object-assign' );
 
+/**
+ * Editable Done display component
+ */
 var DoneEdit = React.createClass( {
 
 	_onDestroyClick: function () {
@@ -24,9 +27,8 @@ var DoneEdit = React.createClass( {
 	},
 
 	/**
-	 * Event handler called within DoneEdit.
-	 * Defining this here allows DoneEdit to be used in multiple places
-	 * in different ways.
+	 * Event handler for updating a dones text
+	 *
 	 * @param  {string} text
 	 */
 	_onSave: function ( text ) {

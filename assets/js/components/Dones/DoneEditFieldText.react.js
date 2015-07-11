@@ -2,6 +2,12 @@ var React = require( 'react' );
 
 var ENTER_KEY_CODE = 13;
 
+/**
+ * Editable in-row Done text input component
+ *
+ * @param {string} value current done text value
+ * @param {callback} onSave
+ */
 var DoneEditFieldText = React.createClass( {
 	getInitialState: function () {
 		return {
@@ -26,8 +32,7 @@ var DoneEditFieldText = React.createClass( {
 	},
 
 	/**
-	 * Invokes the callback passed in as onSave, allowing this component to be
-	 * used in different ways.
+	 * Invokes the callback passed in as onSave
 	 */
 	_save: function () {
 		this.props.onSave( this.state.value );
@@ -39,14 +44,14 @@ var DoneEditFieldText = React.createClass( {
 	/**
 	 * @param {object} event
 	 */
-	_onChange: function ( /*object*/ event ) {
+	_onChange: function ( event ) {
 		this.setState( {
 			value: event.target.value
 		} );
 	},
 
 	/**
-	 * @param  {object} event
+	 * @param {object} event
 	 */
 	_onKeyDown: function ( event ) {
 		if ( event.keyCode === ENTER_KEY_CODE ) {

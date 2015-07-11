@@ -1,5 +1,11 @@
 var React = require( 'react' );
 
+/**
+ * Toggle Done edit component
+ *
+ * @param {int} status toggle state
+ * @param {callback} onClick invoked on toggle click
+ */
 var DoneEditFieldToggle = React.createClass( {
 	render: function () {
 		var status = 'glyphicon-ok';

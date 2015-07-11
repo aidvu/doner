@@ -1,6 +1,15 @@
 var React = require( 'react' );
 
+/**
+ * bootstrap-datepicker component
+ *
+ * @param {string} name used as component id, unique
+ * @param {callback} onChange
+ */
 var DoneFilterDatepicker = React.createClass( {
+	/**
+	 * @returns {Array} of selected dates in YYYY-MM-DD format
+	 */
 	getValue: function () {
 		var dates = $( '#' + this.props.name ).datepicker( 'getDates' );
 
@@ -13,6 +22,9 @@ var DoneFilterDatepicker = React.createClass( {
 
 		return values;
 	},
+	/**
+	 * Invokes the onChange callback when a date changes
+	 */
 	componentDidMount: function () {
 		var onChange = this.props.onChange;
 

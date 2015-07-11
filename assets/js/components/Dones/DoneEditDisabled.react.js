@@ -1,6 +1,9 @@
 var React = require( 'react' );
 var DoneEditFieldToggle = require( './DoneEditFieldToggle.react' );
 
+/**
+ * Non-editable Done display component
+ */
 var DoneEditDisabled = React.createClass( {
 	render: function () {
 		return (

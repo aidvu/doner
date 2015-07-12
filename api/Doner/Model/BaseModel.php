@@ -144,9 +144,7 @@ class BaseModel {
 	}
 
 	/**
-	 * Insert or update model in DB
-	 *
-	 * @return int Number of rows affected
+	 * Insert or update model in DB and populate $this
 	 *
 	 * @throws InternalErrorException
 	 */

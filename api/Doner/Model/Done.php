@@ -64,6 +64,25 @@ class Done extends BaseModel {
 		}
 
 		parent::save();
+
+		$tags = array();
+		$parsed_tags = $this->parse_tags( $this->text );
+		foreach ( $parsed_tags as $parsed_tag ) {
+			$tag = new Tag();
+			$tag->find_or_save( $parsed_tag );
+			$tags[] = $tag;
+		}
+	}
+
+	/**
+	 * Find all #tags in the done text. A tag starts with # and ends with a space.
+	 *
+	 * @return array of parsed tags
+	 */
+	private function parse_tags() {
+		preg_match_all( "/#([^ ]+)/i", $this->text, $matches );
+
+		return $matches[1];
 	}
 
 	/**

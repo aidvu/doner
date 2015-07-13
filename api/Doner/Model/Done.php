@@ -2,6 +2,7 @@
 
 namespace Doner\Model;
 
+use Doner\Database\MySql;
 use Doner\Exception\AuthorizationException;
 use Doner\Validator;
 
@@ -72,6 +73,52 @@ class Done extends BaseModel {
 			$tag->find_or_save( $parsed_tag );
 			$tags[] = $tag;
 		}
+
+		$this->clear_tags();
+		$this->attach_tags( $tags );
+	}
+
+	/**
+	 * Links given tags to the done
+	 *
+	 * @param array $tags to be linked to done
+	 */
+	public function attach_tags( $tags ) {
+
+		if ( empty( $tags ) ) {
+			return;
+		}
+
+		$db = MySql::getInstance();
+
+		$query = 'INSERT INTO dones_tags (dones_id, tags_id) VALUES ';
+
+		$bindings = array();
+		$query_parts = array();
+
+		foreach ( $tags as $tag ) {
+			$query_parts[] = '(?, ?)';
+			$bindings[] = $this->id;
+			$bindings[] = $tag->id;
+		}
+
+		$query .= implode( ', ', $query_parts );
+
+		$stmt = $db->prepare( $query );
+		$stmt->execute( $bindings );
+	}
+
+	/**
+	 * Removes all related tags from done
+	 */
+	public function clear_tags() {
+		$db = MySql::getInstance();
+
+		$query = 'DELETE FROM dones_tags WHERE dones_id = ?';
+		$bindings = array( $this->id );
+
+		$stmt = $db->prepare( $query );
+		$stmt->execute( $bindings );
 	}
 
 	/**

@@ -2,6 +2,8 @@
 
 namespace Doner\Model;
 
+use Doner\Validator;
+
 /**
  * Class Tag
  *
@@ -28,15 +30,21 @@ class Tag extends BaseModel {
 	 * @param string $name to search for
 	 */
 	public function find_or_save( $name ) {
-		$name = strtolower( $name );
+		$this->name = strtolower( $name );
+		Validator::validate(
+			$this,
+			array(
+				'name' => array( Validator::NOT_EMPTY, Validator::STRING ),
+			)
+		);
 
 		$model = static::get_one(
 			null,
 			array(
 				array(
-					'field'    => 'name',
+					'field' => 'name',
 					'operator' => '=',
-					'value'    => $name,
+					'value' => $this->name,
 				),
 			)
 		);
@@ -47,7 +55,6 @@ class Tag extends BaseModel {
 			return;
 		}
 
-		$this->name = $name;
 		$this->save();
 	}
 }

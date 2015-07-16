@@ -1,7 +1,8 @@
 var React = require( 'react' );
+var Router = require( 'react-router' );
+var RouteHandler = Router.RouteHandler;
 
 var Header = require( './Header.react' );
-var DoneListContainer = require( './Dones/DoneListContainer.react' );
 var LoginActions = require( '../actions/LoginActions' );
 var DoneActions = require( '../actions/DoneActions' );
 
@@ -18,8 +19,9 @@ var Doner = React.createClass( {
 		return (
 			<div>
 				<Header />
+
 				<div className="container">
-					<DoneListContainer />
+					<RouteHandler />
 				</div>
 			</div>
 		);

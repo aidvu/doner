@@ -26,9 +26,10 @@ var parseTagsAndText = function ( text ) {
 			lastIndex = tagsMatcher.lastIndex;
 		}
 
+		var link = '#/tag/' + tagMatch[0].substr(1);
 		var key = tagMatch.index + text + tagMatch[0];
 		result.push(
-			<DoneEditLink key={key} link={tagMatch[0]} text={tagMatch[0]}/>
+			<DoneEditLink key={key} link={link} text={tagMatch[0]}/>
 		);
 	}
 

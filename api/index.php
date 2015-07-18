@@ -72,4 +72,44 @@ $api->add_route( 1, \Doner\API::HTTP_PUT, 'dones/{id}', function () use ( $api )
 	$api->response->set_body( $done );
 } );
 
+$api->add_route( 1, \Doner\API::HTTP_GET, 'tags/{name}/dones', function () use ( $api ) {
+	$variables = $api->variables;
+
+	$where = array(
+		array(
+			'field' => 'name',
+			'operator' => '=',
+			'value' => $variables['name'],
+		)
+	);
+	$tag = \Doner\Model\Tag::get_one( null, $where );
+
+	if ( $tag === null ) {
+		$api->response->set_body( array() );
+
+		return;
+	}
+
+	$results = \Doner\Model\Done::get(
+		null,
+		array(
+			array(
+				'field' => 'tags_id',
+				'operator' => '=',
+				'value' => $tag->id,
+			)
+		),
+		array(
+			array(
+				'fields' => array(
+					'dones_tags.tags_id AS tags_id'
+				),
+				'join' => 'dones_tags ON dones.id = dones_tags.dones_id'
+			),
+		)
+	);
+
+	$api->response->set_body( $results );
+} );
+
 $api->run();

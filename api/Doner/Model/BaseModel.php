@@ -37,11 +37,13 @@ class BaseModel {
 	 *
 	 * @param array|null $select_fields fields to fetch or null to fetch all fields for Model
 	 * @param array $parameters query parameters
+	 * @param array $additional_fields to pull from join tables
+	 * @param int $offset how many records to skip
 	 * @param int $limit number of records to be returned by query
 	 *
 	 * @return array fetched rows from DB
 	 */
-	public static function get( $select_fields = null, $parameters = array(), $limit = 0 ) {
+	public static function get( $select_fields = null, $parameters = array(), $additional_fields = array(), $offset = 0, $limit = 0 ) {
 		$db = MySql::getInstance();
 
 		if ( empty( $select_fields ) ) {
@@ -54,7 +56,8 @@ class BaseModel {
 		}
 
 		$join_tables = array();
-		foreach ( static::$additional_fields as $additional_field ) {
+		$additional_fields = array_merge( $additional_fields, static::$additional_fields );
+		foreach ( $additional_fields as $additional_field ) {
 			$fields = array_merge( $fields, $additional_field['fields'] );
 			$join_tables[] = ' INNER JOIN ' . $additional_field['join'];
 		}
@@ -96,7 +99,7 @@ class BaseModel {
 		}
 
 		if ( ! empty( $limit ) ) {
-			$query .= " LIMIT $limit ";
+			$query .= " LIMIT $limit OFFSET $offset ";
 		}
 
 		$stmt = $db->prepare( $query );
@@ -111,13 +114,14 @@ class BaseModel {
 	 *
 	 * @param array|null $select_fields fields to fetch or null to fetch all fields for Model
 	 * @param array $parameters query parameters
+	 * @param array $additional_fields to pull from join tables
 	 *
 	 * @return BaseModel|null fetched model or null if it doesn't exist
 	 */
-	public static function get_one( $select_fields = null, $parameters ) {
+	public static function get_one( $select_fields = null, $parameters, $additional_fields = array() ) {
 		$model = null;
 
-		$models = static::get( $select_fields, $parameters, 1 );
+		$models = static::get( $select_fields, $parameters, $additional_fields, 0, 1 );
 		if ( ! empty( $models ) ) {
 			$model = $models[0];
 		}

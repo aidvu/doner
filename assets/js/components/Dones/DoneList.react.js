@@ -40,7 +40,7 @@ var DoneListItem = React.createClass( {
 		if ( this.props.title ) {
 			head = (
 				<thead>
-					<th colSpan="3">
+					<th colSpan="4">
 						{this.props.title}
 					</th>
 				</thead>

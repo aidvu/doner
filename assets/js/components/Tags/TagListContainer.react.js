@@ -10,7 +10,9 @@ var TagListContainer = React.createClass( {
 		var title = '#' + this.props.params.name;
 		return (
 			<div className="row">
-				<DoneList title={title}/>
+				<div className="col-xs-12 pull-left">
+					<DoneList title={title}/>
+				</div>
 			</div>
 		);
 	}

@@ -12,7 +12,7 @@ var TagListContainer = React.createClass( {
 		return (
 			<div className="row">
 				<div className="col-xs-12 pull-left">
-					<DoneList title={title}/>
+					<DoneList title={title} tag={this.props.params.name}/>
 				</div>
 			</div>
 		);

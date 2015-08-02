@@ -4,9 +4,9 @@ var DoneEdit = require( './DoneEdit.react' );
 var DoneStore = require( '../../stores/DoneStore' );
 var LoginStore = require( '../../stores/LoginStore' );
 
-function getState() {
+function getState( tag ) {
 	return {
-		dones: DoneStore.getAll(),
+		dones: DoneStore.getDones( tag ),
 		user: LoginStore.getUser()
 	};
 }
@@ -64,10 +64,10 @@ var DoneList = React.createClass( {
 		LoginStore.removeChangeListener( this._onChange );
 	},
 	_onChange: function () {
-		this.setState( getState() );
+		this.setState( getState( this.props.tag ) );
 	},
 	getInitialState: function () {
-		return getState();
+		return getState( this.props.tag );
 	},
 	render: function () {
 		var doneList = [];

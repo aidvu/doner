@@ -9,12 +9,23 @@ var DoneActions = {
 	 * @param {Object} parameters
 	 * @param {Array} parameters.user_id array of done owners
 	 * @param {Array} parameters.created_at array of date strings
-	 * @param {String} parameters.tag tag to filter by
 	 */
 	load: function ( parameters ) {
 		AppDispatcher.dispatch( {
 			actionType: DonerConstants.DONE_LOAD,
 			parameters: parameters
+		} );
+	},
+
+	/**
+	 * Load dones for given tag
+	 *
+	 * @param {string} tag to get dones for
+	 */
+	load_by_tag: function ( tag ) {
+		AppDispatcher.dispatch( {
+			actionType: DonerConstants.DONE_LOAD_BY_TAG,
+			tag: tag
 		} );
 	},
 

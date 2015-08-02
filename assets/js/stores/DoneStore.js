@@ -19,12 +19,28 @@ var CHANGE_EVENT = 'change';
 var _dones = {};
 
 /**
+ * Object containing loaded dones by tag, tag is used as a key
+ *
+ * @type {Object}
+ * @private
+ */
+var _dones_by_tag = {};
+
+/**
  * Dones API endpoint
  *
  * @type {string}
  * @private
  */
 var _url = 'api/v1/dones';
+
+/**
+ * Dones by Tag API endpoint
+ *
+ * @type {string}
+ * @private
+ */
+var _url_tags = 'api/v1/tags/{tag}/dones';
 
 /**
  * Default error callback
@@ -47,7 +63,7 @@ var complete = function () {
  * @param {array} parameters.user_id array of done owners
  * @param {array} parameters.created_at array of date strings
  */
-function load_dones( parameters ) {
+function load( parameters ) {
 	$.ajax( {
 		url: _url,
 		dataType: 'json',
@@ -57,6 +73,29 @@ function load_dones( parameters ) {
 			_dones = {};
 			for ( var done in data ) {
 				_dones[data[done].id] = data[done];
+			}
+		},
+		error: error,
+		complete: complete
+	} );
+}
+
+/**
+ * Load dones from server for given tag
+ *
+ * @param {string} tag to get dones for
+ */
+function load_by_tag( tag ) {
+	var url = _url_tags.replace('{tag}', tag);
+	
+	$.ajax( {
+		url: url,
+		dataType: 'json',
+		type: 'GET',
+		success: function ( data ) {
+			_dones_by_tag.tag = {};
+			for ( var done in data ) {
+				_dones_by_tag.tag[data[done].id] = data[done];
 			}
 		},
 		error: error,
@@ -136,16 +175,23 @@ var DoneStore = assign( {}, EventEmitter.prototype, {
 	 * Get the currently loaded dones, returned as an array of objects
 	 * Each objects contains date (YYYY-MM-DD formatted), and data containing all the dones for given date
 	 *
+	 * @param {string} tag
+	 *
 	 * @return {Array}
 	 */
-	getAll: function () {
+	getDones: function ( tag ) {
+		var dones = _dones;
+		if (tag) {
+			dones = _dones_by_tag.tag;
+		}
+
 		var data_objects = {};
-		for ( var key in _dones ) {
-			var date_key = _dones[key]['created_at'].substr( 0, 10 );
+		for ( var key in dones ) {
+			var date_key = dones[key]['created_at'].substr( 0, 10 );
 			if ( ! data_objects[date_key] ) {
 				data_objects[date_key] = [];
 			}
-			data_objects[date_key].push( _dones[key] );
+			data_objects[date_key].push( dones[key] );
 		}
 
 		var organized_data = [];
@@ -205,7 +251,13 @@ AppDispatcher.register( function ( action ) {
 			break;
 
 		case DonerConstants.DONE_LOAD:
-			load_dones( action.parameters );
+			load( action.parameters );
+			break;
+
+		case DonerConstants.DONE_LOAD_BY_TAG:
+			if (action.tag) {
+				load_by_tag( action.tag );
+			}
 			break;
 
 		default:

@@ -16,7 +16,7 @@ var parseTagsAndText = function ( text ) {
 	var result = [];
 
 	var tagClick = function(tag) {
-		DoneActions.load( {tag: tag} );
+		DoneActions.load_by_tag( tag );
 	};
 
 	var tagsMatcher = new RegExp( '#[^ ]+', 'gi' );

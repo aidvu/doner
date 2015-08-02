@@ -4,7 +4,6 @@ var RouteHandler = Router.RouteHandler;
 
 var Header = require( './Header.react' );
 var LoginActions = require( '../actions/LoginActions' );
-var DoneActions = require( '../actions/DoneActions' );
 
 /**
  * This component is the top level component of the app
@@ -13,7 +12,6 @@ var DoneActions = require( '../actions/DoneActions' );
 var Doner = React.createClass( {
 	componentDidMount: function () {
 		LoginActions.loadUser();
-		DoneActions.load( {} );
 	},
 	render: function () {
 		return (

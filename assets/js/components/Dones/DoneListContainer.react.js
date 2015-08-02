@@ -3,11 +3,15 @@ var React = require( 'react' );
 var DoneForm = require( './DoneForm.react' );
 var DoneList = require( './DoneList.react' );
 var DoneFilter = require( './DoneFilter.react' );
+var DoneActions = require( '../../actions/DoneActions' );
 
 /**
  * Done List View which contains a new done creation component, filtering component, and the done display component
  */
 var DoneListContainer = React.createClass( {
+	componentDidMount: function () {
+		DoneActions.load( {} );
+	},
 	render: function () {
 		return (
 			<div className="row">

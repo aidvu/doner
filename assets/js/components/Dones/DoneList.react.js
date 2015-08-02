@@ -1,7 +1,6 @@
 var React = require( 'react' );
 
 var DoneEdit = require( './DoneEdit.react' );
-var DoneEditDisabled = require( './DoneEditDisabled.react' );
 var DoneStore = require( '../../stores/DoneStore' );
 var LoginStore = require( '../../stores/LoginStore' );
 
@@ -24,16 +23,9 @@ var DoneListItem = React.createClass( {
 		var doneList = [];
 		for ( var key in this.props.dones ) {
 			var done = this.props.dones[key];
-
-			if ( done.user_id == this.props.user.id ) {
-				doneList.push(
-					<DoneEdit key={done.id} data={done}/>
-				);
-			} else {
-				doneList.push(
-					<DoneEditDisabled key={done.id} data={done}/>
-				);
-			}
+			doneList.push(
+				<DoneEdit key={done.id} data={done} isOwner={done.user_id == this.props.user.id}/>
+			);
 		}
 
 		var head;

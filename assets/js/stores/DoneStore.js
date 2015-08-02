@@ -40,7 +40,6 @@ var complete = function () {
 	DoneStore.emitChange();
 };
 
-
 /**
  * Load dones from server filtered by parameters
  *

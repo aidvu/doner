@@ -15,6 +15,10 @@ var assign = require( 'object-assign' );
 var parseTagsAndText = function ( text ) {
 	var result = [];
 
+	var tagClick = function(tag) {
+		DoneActions.load( {tag: tag} );
+	};
+
 	var tagsMatcher = new RegExp( '#[^ ]+', 'gi' );
 	var tagMatch;
 	var lastIndex = 0;
@@ -29,7 +33,7 @@ var parseTagsAndText = function ( text ) {
 		var link = '#/tag/' + tagMatch[0].substr(1);
 		var key = tagMatch.index + text + tagMatch[0];
 		result.push(
-			<DoneEditLink key={key} link={link} text={tagMatch[0]}/>
+			<DoneEditLink key={key} link={link} text={tagMatch[0]} click={tagClick.bind(this, tagMatch[0].substr(1))} />
 		);
 	}
 
@@ -87,17 +91,35 @@ var DoneEdit = React.createClass( {
 			);
 		}
 
+		var trash;
+		var toggleClick;
+		var user = (
+			<td className="col-xs-1">
+				<span className="badge pull-right">
+					{this.props.data.user}
+				</span>
+			</td>
+		);
+		var doubleClick;
+
+		if (this.props.isOwner) {
+			trash = (<span onClick={this._onDestroyClick} className="glyphicon glyphicon-trash pointer" aria-hidden="true"></span>);
+			toggleClick = this._onStateClick;
+			doubleClick = this._onDoubleClick;
+			user = null;
+		}
+
 		return (
 			<tr>
 				<td className="col-xs-1">
-					<DoneEditFieldToggle status={this.props.data.status} onClick={this._onStateClick}/>
+					<DoneEditFieldToggle status={this.props.data.status} onClick={toggleClick}/>
 				</td>
-				<td className="col-xs-10" onDoubleClick={this._onDoubleClick}>
+				<td className="col-xs-9" onDoubleClick={doubleClick}>
 					{text}
 				</td>
+				{user}
 				<td className="col-xs-1">
-					<span onClick={this._onDestroyClick} className="glyphicon glyphicon-trash pointer"
-					      aria-hidden="true"></span>
+					{trash}
 				</td>
 			</tr>
 		);
